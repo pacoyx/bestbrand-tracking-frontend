@@ -1,0 +1,67 @@
+<h2 mat-dialog-title>
+    <mat-icon>edit_note</mat-icon> {{titulo}}
+</h2>
+<mat-dialog-content>
+    <form [formGroup]="empresaForm" style="padding: 5px; display: flex; flex-direction: column;">
+
+        <mat-form-field appearance="outline">
+            <mat-label>RUC</mat-label>
+            <input matInput formControlName="ruc">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Razón Social</mat-label>
+            <input matInput formControlName="razonSocial">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Direccion</mat-label>
+            <input matInput formControlName="direccion">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Telefono</mat-label>
+            <input matInput formControlName="telefono">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Estado</mat-label>
+            <mat-select formControlName="estadoRegistro">
+                <mat-option value="A"> Activo </mat-option>
+                <mat-option value="I"> Inactivo </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <app-form-errors [form]="empresaForm" [errorMessages]="empresaErrorMessages"></app-form-errors>
+
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions style="display: flex; justify-content: space-evenly;">
+
+    <button mat-fab extended (click)="onCancel()">
+        <mat-icon style="color: red;">cancel</mat-icon>
+        Cancelar
+    </button>
+
+
+    @if(loadingSave){
+    <button mat-fab extended>
+        <div style="display: flex; gap: 5px;">
+            Grabando...
+        </div>
+    </button>
+    }
+
+    @if(!loadingSave){
+    <button mat-fab extended (click)="onSubmit()">
+        <mat-icon>save</mat-icon>
+        Grabar
+    </button>
+    }
+
+</mat-dialog-actions>

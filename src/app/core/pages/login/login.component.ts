@@ -59,11 +59,11 @@ export class LoginComponent  implements OnInit, OnDestroy {
           console.log('Login successful:', response);
           localStorage.setItem('bbtrack', JSON.stringify(response.data));
 
-          if (response.data.role === 'admin') {          
+          if (response.data.role === 'ADMIN') {          
             this.router.navigate(['/pedidos']);
           }
 
-          if (response.data.role === 'user') {            
+          if (response.data.role === 'DRIVE') {            
             this.router.navigate(['/conductor']);
           }
 

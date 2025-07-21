@@ -1,0 +1,107 @@
+<div class="container-mntconductor">
+    <div
+        style="display: flex; justify-content: space-between; border: 1px solid gainsboro; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
+        <div style="display: flex; gap: 5px; align-items: center;">
+            <mat-icon>person_apron</mat-icon>
+            <label><strong>Registro de Conductores</strong></label>
+        </div>
+    </div>
+
+    <div class="section-controls">
+        <div style="display: flex; gap: 5px;">
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Buscar Conductor</mat-label>
+                <input matInput [formControl]="filterControl" placeholder="Ingrese nombre del conductor">
+            </mat-form-field>
+            <button mat-fab (click)="limpiaFiltro()" [disabled]="!bolFiltro">
+                <mat-icon>filter_alt_off</mat-icon>
+            </button>
+        </div>
+
+        <button mat-fab extended (click)="nuevoConductor()">
+            <mat-icon>library_add</mat-icon>
+            Nuevo Conductor
+        </button>
+
+
+        <mat-paginator [length]="totalProducts" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]">
+        </mat-paginator>
+
+    </div>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Editar </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-mini-fab (click)="editConductor(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+            <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="licencia">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Licencia </th>
+            <td mat-cell *matCellDef="let element">
+                {{element.licencia}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="telefono">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Telefono </th>
+            <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="docIdentidad">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Doc. Identidad </th>
+            <td mat-cell *matCellDef="let element"> {{element.docIdentidad}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="empTransNombre">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Empresa Transporte </th>
+            <td mat-cell *matCellDef="let element"> {{element.empTransNombre}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="empTransRuc">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> RUC Empresa </th>
+            <td mat-cell *matCellDef="let element"> {{element.empTransRuc}} </td>
+        </ng-container>
+
+
+
+        <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef> Estado </th>
+            <td mat-cell *matCellDef="let element" style="text-align: center;">
+
+                @switch (element.estado) {
+                @case ('A') {
+                <span style="color: green;">Activo</span>
+                }
+                @case ('I') {
+                <span style="color: red;">Inactivo</span>
+                }
+                @default {
+                <span style="color: red;">I</span>
+                }
+                }
+
+            </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="cabecera"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+</div>

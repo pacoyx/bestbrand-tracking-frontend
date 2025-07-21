@@ -1,0 +1,153 @@
+<div class="container-trackpedidos">
+    <div
+        style="display: flex; justify-content: space-between; border: 1px solid gainsboro; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
+        <div style="display: flex; gap: 5px; align-items: center;">
+            <mat-icon>view_timeline</mat-icon>
+            <label><strong>Tracking de Pedidos</strong></label>
+        </div>
+    </div>
+
+    <div class="section-controls">
+        <mat-form-field>
+            <mat-label>Seleccione fecha</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="fechaHoy">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <button mat-fab extended (click)="cargarPedidos()">
+            <mat-icon>search</mat-icon>
+            Buscar
+        </button>
+        @if (loading) {
+        <div>
+            Cargando pedidos...
+        </div>
+        }
+    </div>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Asignar </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-mini-fab (click)="asignarConductor(element)">
+                    <mat-icon>swipe_up</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="prioridad">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Prioridad </th>
+            <td mat-cell *matCellDef="let element">
+                {{element.prioridad}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nropedido">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Nro Pedido </th>
+            <td mat-cell *matCellDef="let element">
+                {{element.numero}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cliente">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+            <td mat-cell *matCellDef="let element">
+                {{element.cliente}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="direntrega">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Direccion Entrega </th>
+            <td mat-cell *matCellDef="let element"> {{element.direccionEntrega}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ubigeo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Ubigeo </th>
+            <td mat-cell *matCellDef="let element">
+                <div style="display: flex; flex-direction: column;">
+                    <div style="border-bottom: 1px solid gainsboro;">
+                        {{element.departamento}}
+                    </div>
+                    <div style="border-bottom: 1px solid gainsboro;">
+                        {{element.provincia}}
+                    </div>
+                    <div>
+                        {{element.distrito}}
+                    </div>
+                </div>
+
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="docguia">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Num. Guia </th>
+            <td mat-cell *matCellDef="let element">
+                <div style="display: flex; flex-direction: column;">
+                    <div>
+                        {{element.serieGuia}}
+                    </div>
+                    <div>
+                        {{element.numeroGuia}}
+                    </div>
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="transportista">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Transportista </th>
+            <td mat-cell *matCellDef="let element">
+                <div style="display: flex; flex-direction: column;">
+                    <div style="border-bottom: 1px solid gainsboro;">
+                        {{element.transEmpresa}}
+                    </div>
+                    <div style="border-bottom: 1px solid gainsboro;">
+                        {{element.transConductor}}
+                    </div>
+                    <div>
+                        {{element.transVehiculo}}
+                    </div>
+                </div>
+
+            </td>
+        </ng-container>
+
+
+        /*
+        CANCELADO
+        ENTREGADO
+        EN_TRANSITO
+        PENDIENTE*/
+
+        <ng-container matColumnDef="estadopedido">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado Pedido </th>
+            <td mat-cell *matCellDef="let element">
+                @if(element.estadoPedido === 'EN_TRANSITO') {
+                <mat-chip style="background-color: #ffc107;width: 100px;">En Transito</mat-chip>
+                } @else if(element.estadoPedido === 'ENTREGADO') {
+                <div style="display: flex; gap: 5px; align-items: center;">
+                    <mat-chip style="background-color: #007bff; color: white;width: 100px;">Entregado</mat-chip>
+                    <button mat-mini-fab>
+                        <mat-icon>photo_camera</mat-icon>
+                    </button>
+                </div>
+                } @else if(element.estadoPedido === 'CANCELADO') {
+                <mat-chip style="background-color: #dc3545; color: white; width: 100px;">Cancelado</mat-chip>
+                } @else if(element.estadoPedido === 'ASIGNADO') {
+                <mat-chip style="background-color: #1c7c04; color: white; width: 100px;">ASIGNADO</mat-chip>
+                } @else {
+                <mat-chip style="background-color: #4d5e5f; color: black; width: 100px;">PENDIENTE</mat-chip>
+
+                }
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="cabecera"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+
+
+
+</div>

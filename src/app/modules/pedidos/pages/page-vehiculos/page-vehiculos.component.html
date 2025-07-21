@@ -1,0 +1,92 @@
+<div class="container-mntvehiculo">
+    <div
+        style="display: flex; justify-content: space-between; border: 1px solid gainsboro; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
+        <div style="display: flex; gap: 5px; align-items: center;">
+            <mat-icon>local_shipping</mat-icon>
+            <label><strong>Registro de Vehiculos</strong></label>
+        </div>
+    </div>
+
+    <div class="section-controls">
+        <div style="display: flex; gap: 5px;">
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Buscar Vehiculo</mat-label>
+                <input matInput [formControl]="filterControl" placeholder="ingrese placa del vehiculo">
+            </mat-form-field>
+            <button mat-fab (click)="limpiaFiltro()" [disabled]="!bolFiltro">
+                <mat-icon>filter_alt_off</mat-icon>
+            </button>
+        </div>
+
+        <button mat-fab extended (click)="nuevoVehiculo()">
+            <mat-icon>library_add</mat-icon>
+            Nuevo Vehiculo
+        </button>
+
+
+        <mat-paginator [length]="totalProducts" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]">
+        </mat-paginator>
+
+    </div>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Editar </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-mini-fab (click)="editarVehiculo(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="placa">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Placa </th>
+            <td mat-cell *matCellDef="let element"> {{element.placa}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="marca">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Marca </th>
+            <td mat-cell *matCellDef="let element">
+                {{element.marca}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="modelo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th> 
+            <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="anio">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Año </th>
+            <td mat-cell *matCellDef="let element"> {{element.anio}} </td>
+        </ng-container>
+
+
+
+        <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef> Estado </th>
+            <td mat-cell *matCellDef="let element" style="text-align: center;">
+
+                @switch (element.estado) {
+                @case ('A') {
+                <span style="color: green;">Activo</span>
+                }
+                @case ('I') {
+                <span style="color: red;">Inactivo</span>
+                }
+                @default {
+                <span style="color: red;">I</span>
+                }
+                }
+
+            </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="cabecera"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+</div>

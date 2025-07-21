@@ -1,0 +1,90 @@
+<h2 mat-dialog-title>
+    <mat-icon>edit_note</mat-icon> {{titulo}}
+</h2>
+<mat-dialog-content>
+    <form [formGroup]="asignarForm" style="padding: 5px; display: flex; flex-direction: column;">
+
+        <div style="display: flex; gap: 10px;">
+            <mat-form-field appearance="outline">
+                <mat-label>Nro Pedido</mat-label>
+                <input matInput [value]="displayNroPedido" readonly>
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline">
+                <mat-label>Prioridad</mat-label>
+                <mat-select formControlName="prioridad">
+                    @for (item of prioridades; track $index) {
+                    <mat-option [value]="item"> {{item}} </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+
+        </div>
+
+
+
+        <mat-form-field appearance="outline">
+            <mat-label>Empresa Transportista</mat-label>            
+            <mat-select formControlName="empresa">
+                @for (item of data.objEmpresas; track item.id) {
+                <mat-option [value]="item.id"> {{item.razonSocial}} </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Conductor</mat-label>
+            <mat-select formControlName="conductor">
+                @for (item of data.objConductores; track item.id) {
+                <mat-option [value]="item.id"> {{item.nombre}} </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Vehiculo</mat-label>
+            <mat-select formControlName="vehiculo">
+                @for (item of data.objVehiculos; track item.id) {
+                <mat-option [value]="item.id"> {{item.placa}} </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline">
+            <mat-label>Estado Registro</mat-label>
+            <mat-select formControlName="estado">
+                <mat-option value="A"> Activo </mat-option>
+                <mat-option value="I"> Inactivo </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <!-- <app-form-errors [form]="asignarForm" [errorMessages]="asignarErrorMessages"></app-form-errors> -->
+
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions style="display: flex; justify-content: space-evenly;">
+
+    <button mat-fab extended (click)="onCancel()">
+        <mat-icon style="color: red;">cancel</mat-icon>
+        Cancelar
+    </button>
+
+
+    @if(loadingSave){
+    <button mat-fab extended>
+        <div style="display: flex; gap: 5px;">
+            Grabando...
+        </div>
+    </button>
+    }
+
+    @if(!loadingSave){
+    <button mat-fab extended (click)="onSubmit()">
+        <mat-icon>save</mat-icon>
+        Grabar
+    </button>
+    }
+
+</mat-dialog-actions>

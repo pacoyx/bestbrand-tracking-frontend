@@ -7,6 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ToggleStoreService } from '../../services/toggle-store.service';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-layout-pedidos',
@@ -20,12 +21,23 @@ import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 })
 export class LayoutPedidosComponent {
 
-@ViewChild('sidenav') sidenav!: MatSidenav;
+  isMobile = false;
+  sidenavOpened = false;
 
-constructor(
+  @ViewChild('sidenav') sidenav!: MatSidenav;
+
+  constructor(private breakpointObserver: BreakpointObserver,
     private router: Router,
     private toggleStore: ToggleStoreService
-  ) { }
+  ) {
+    this.breakpointObserver.observe([Breakpoints.Handset])
+      .subscribe(result => {
+        this.isMobile = result.matches;
+        if (!this.isMobile) {
+          this.sidenavOpened = false;
+        }
+      });
+  }
 
   cerrarSesion() {
     localStorage.removeItem('bbtrack');
@@ -38,9 +50,14 @@ constructor(
     this.toggleStore.setToggleState(true);
   }
 
-  toggle() {       
+  toggle() {
     // this.toggleStore.setToggleState(false);
     this.sidenav.toggle();
+  }
+
+  openSidenav() {
+    this.sidenavOpened = true;
+    this.sidenav.open();
   }
 
 }

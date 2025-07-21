@@ -1,0 +1,75 @@
+<h2 mat-dialog-title>
+    <mat-icon>edit_note</mat-icon> {{titulo}}
+</h2>
+<mat-dialog-content>
+    <form [formGroup]="usuarioForm" style="padding: 5px; display: flex; flex-direction: column;">
+
+        <mat-form-field appearance="outline">
+            <mat-label>Nombre de Usuario</mat-label>
+            <input matInput formControlName="username">
+        </mat-form-field>
+
+        @if(!this.data.esNuevo){
+            <mat-checkbox formControlName="cambiarPassword">Cambiar Password</mat-checkbox>
+        }
+        
+        <mat-form-field appearance="outline">
+            <mat-label>Clave</mat-label>
+            <input matInput formControlName="password" type="password">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Rol</mat-label>
+            <mat-select formControlName="role">
+                @for (food of ['DRIVE','WARE','ADMIN']; track food) {
+                <mat-option [value]="food">{{food}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Conductor</mat-label>
+            <mat-select formControlName="conductorId">
+                @for (conductor of data.objConductores | prependZeroOption:'[Seleccione uno]'; track conductor) {
+                <mat-option [value]="conductor.id">{{conductor.nombre}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Estado</mat-label>
+            <mat-select formControlName="estado">
+                <mat-option value="A"> Activo </mat-option>
+                <mat-option value="I"> Inactivo </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <app-form-errors [form]="usuarioForm" [errorMessages]="conductorErrorMessages"></app-form-errors>
+
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions style="display: flex; justify-content: space-evenly;">
+
+    <button mat-fab extended (click)="onCancel()">
+        <mat-icon style="color: red;">cancel</mat-icon>
+        Cancelar
+    </button>
+
+
+    @if(loadingSave){
+    <button mat-fab extended>
+        <div style="display: flex; gap: 5px;">
+            Grabando...
+        </div>
+    </button>
+    }
+
+    @if(!loadingSave){
+    <button mat-fab extended (click)="onSubmit()">
+        <mat-icon>save</mat-icon>
+        Grabar
+    </button>
+    }
+
+</mat-dialog-actions>

@@ -1,0 +1,98 @@
+<div class="container-mntUser">
+    <div
+        style="display: flex; justify-content: space-between; border: 1px solid gainsboro; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
+        <div style="display: flex; gap: 5px; align-items: center;">
+            <mat-icon>account_box</mat-icon>
+            <label><strong>Registro de Empresas</strong></label>
+        </div>
+    </div>
+
+     <div class="section-controls">
+        <div style="display: flex; gap: 5px;">
+            <mat-form-field appearance="outline">
+                <mat-label>Buscar Empresa</mat-label>
+                <input matInput [formControl]="filterControl" placeholder="ingrese nombre del Usuario">
+            </mat-form-field>
+            <button mat-fab (click)="limpiaFiltro()" [disabled]="!bolFiltro">
+                <mat-icon>filter_alt_off</mat-icon>
+            </button>
+        </div>
+
+        <button mat-fab extended (click)="nuevoEmpresa()">
+            <mat-icon>library_add</mat-icon>
+            Nueva Empresa
+        </button>
+
+
+        <mat-paginator [length]="totalProducts" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]">
+        </mat-paginator>
+
+    </div>
+
+
+     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Editar </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-mini-fab (click)="editarEmpresa(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="ruc">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> RUC </th>
+            <td mat-cell *matCellDef="let element"> {{element.ruc}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="razonSocial">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Razon Social </th>
+            <td mat-cell *matCellDef="let element">
+                {{element.razonSocial}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="direccion">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Dirección </th>
+            <td mat-cell *matCellDef="let element"> {{element.direccion}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="telefono">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Teléfono </th>
+            <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef> Estado </th>
+            <td mat-cell *matCellDef="let element" style="text-align: center;">
+
+                @switch (element.estadoRegistro) {
+                @case ('A') {
+                <span style="color: green;">Activo</span>
+                }
+                @case ('I') {
+                <span style="color: red;">Inactivo</span>
+                }
+                @default {
+                <span style="color: red;">I</span>
+                }
+                }
+
+            </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="cabecera"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+
+</div>

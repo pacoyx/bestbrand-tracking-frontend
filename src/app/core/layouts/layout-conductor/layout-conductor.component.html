@@ -1,1 +1,39 @@
-<p>layout-conductor works!</p>
+<mat-sidenav-container class="example-container">
+    <!-- <mat-sidenav #sidenav mode="side" opened> -->
+    <mat-sidenav #sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile || sidenavOpened">
+    <mat-nav-list>
+
+        <a mat-list-item [routerLink]="['/pedidos/trackpedidos']" routerLinkActive="router-link-active"
+        [routerLinkActiveOptions]="{ exact: true }">
+            <mat-icon>view_timeline</mat-icon>
+            Pedidos
+        </a>
+        
+        <a mat-list-item [routerLink]="['/conductor/driverTrack']" routerLinkActive="router-link-active"
+        [routerLinkActiveOptions]="{ exact: true }">
+            <mat-icon>view_timeline</mat-icon>
+            Operaciones
+        </a>
+
+        <a mat-list-item (click)="cerrarSesion()">
+            <mat-icon>logout</mat-icon>
+            Cerrar Sesion
+        </a>
+    </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        @if(isMobile){
+        <button mat-icon-button class="menu-button" (click)="openSidenav()"
+            style="position: fixed; top: 16px; left: 16px; z-index: 1000;">
+            <mat-icon>menu</mat-icon>
+        </button>
+        }
+
+        <div style="height: 100vh; display: flex; flex-direction: column; margin: 20px; margin-top: 0;">
+            <router-outlet></router-outlet>
+        </div>
+
+
+    </mat-sidenav-content>
+</mat-sidenav-container>

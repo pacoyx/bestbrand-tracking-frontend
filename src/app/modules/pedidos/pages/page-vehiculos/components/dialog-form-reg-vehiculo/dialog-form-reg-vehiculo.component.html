@@ -1,0 +1,62 @@
+<h2 mat-dialog-title>
+    <mat-icon>edit_note</mat-icon> {{titulo}}
+</h2>
+<mat-dialog-content>
+    <form [formGroup]="vehiculoForm" style="padding: 5px; display: flex; flex-direction: column;">
+
+        <mat-form-field appearance="outline">
+            <mat-label>Placa</mat-label>
+            <input matInput formControlName="placa">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Marca</mat-label>
+            <input matInput formControlName="marca">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Modelo</mat-label>
+            <input matInput formControlName="modelo">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Año</mat-label>
+            <input matInput formControlName="anio" type="number">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Estado</mat-label>
+            <mat-select formControlName="estado">
+                <mat-option value="A"> Activo </mat-option>
+                <mat-option value="I"> Inactivo </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <app-form-errors [form]="vehiculoForm" [errorMessages]="conductorErrorMessages"></app-form-errors>
+
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions style="display: flex; justify-content: space-evenly;">
+
+    <button mat-fab extended (click)="onCancel()">
+        <mat-icon style="color: red;">cancel</mat-icon>
+        Cancelar
+    </button>
+
+
+    @if(loadingSave){
+    <button mat-fab extended>
+        <div style="display: flex; gap: 5px;">
+            Grabando...
+        </div>
+    </button>
+    }
+
+    @if(!loadingSave){
+    <button mat-fab extended (click)="onSubmit()">
+        <mat-icon>save</mat-icon>
+        Grabar
+    </button>
+    }
+
+</mat-dialog-actions>
