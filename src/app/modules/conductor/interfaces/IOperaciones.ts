@@ -21,4 +21,21 @@ export interface IGetPedidosResponse {
   empresaTransporteId: number;
   conductorId: number;
   vehiculoId: number;
+  registros: IPedidoRegistros[];
+}
+
+export interface IPedidoRegistros {
+  id: number;  
+  fechaRegistro: string;
+  estadoRegistro: string;
+  comentarios: string;  
+}
+
+export interface IActualizarEstadoPedidoRequest {
+  pedidoId: number;
+  estadoPedido: string;
+  comentarios: string;
+  fechaEntrega: string;
+  nombreFoto: string;
+  conductorId: number;
 }

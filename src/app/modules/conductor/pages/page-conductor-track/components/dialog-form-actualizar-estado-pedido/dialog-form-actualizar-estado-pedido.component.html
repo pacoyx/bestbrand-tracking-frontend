@@ -1,1 +1,88 @@
-<p>dialog-form-actualizar-estado-pedido works!</p>
+<h2 mat-dialog-title><mat-icon>edit_note</mat-icon> {{ titulo }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="asignarForm">
+    <div
+      style="display: flex; flex-direction: column; gap: 20px; padding: 20px"
+    >
+      <div
+        style="
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <mat-radio-group
+          aria-label="Select an option"
+          formControlName="estado"
+          style="
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fafafa;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #666;
+            min-width: 120px;            
+          "
+        >
+          <mat-radio-button value="ASIGNADO">Asignado</mat-radio-button>
+          <mat-radio-button value="EN_TRANSITO">En Transito</mat-radio-button>
+          <mat-radio-button value="ENTREGADO">Entregado</mat-radio-button>
+          <mat-radio-button value="CANCELADO">Cancelado</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div style="display: flex; flex-direction: column; width: 100%">
+        <mat-form-field appearance="outline" style="width: 100%" >
+          <mat-label>Comentarios</mat-label>
+          <textarea matInput rows="3" formControlName="comentarios"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 10px;
+          border: 1px solid gainsboro;
+          padding: 10px;
+        "
+      >
+        <button mat-fab extended>
+          <mat-icon>photo_camera</mat-icon>
+          Foto
+        </button>
+
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            border: 1px solid gainsboro;
+          "
+        >
+          <img src="" alt="" />
+        </div>
+        <!-- <button mat-fab extended>
+                    <mat-icon>preview</mat-icon>
+                    Ver
+                </button> -->
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions style="display: flex; justify-content: space-evenly">
+  <button mat-fab extended (click)="onCancel()">
+    <mat-icon style="color: red">cancel</mat-icon>
+    Cancelar
+  </button>
+  <button mat-fab extended (click)="grabar()">
+    <mat-icon>save</mat-icon>
+    Grabar
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,80 @@
+.example-card{
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
+}
+
+.enTransito {
+  color: #856404;
+  background-color: #fff3cd;  
+  border: 1px solid #ffeeba;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-radius: 20px;              
+}
+
+.enEntregado {
+  color: #004085;
+  background-color: #cce5ff;  
+  border: 1px solid #b8daff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-radius: 20px;              
+}
+
+.enCancelado {
+  color: #721c24;
+  background-color: #f8d7da;  
+  border: 1px solid #f5c6cb;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-radius: 20px;              
+}
+.asignado {
+  color: #383d41;
+  background-color: #e2e3e5;  
+  border: 1px solid #d6d8db;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-radius: 20px;              
+}
+
+.header-card {
+  background-color: #fefefe;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+
+.details-container {
+  animation: slideDown 0.3s ease-out;
+  transform-origin: top;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 500px;
+  }
+}
+
+.details-exit {
+  animation: slideUp 0.3s ease-in forwards;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 500px;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+    max-height: 0;
+  }
+}

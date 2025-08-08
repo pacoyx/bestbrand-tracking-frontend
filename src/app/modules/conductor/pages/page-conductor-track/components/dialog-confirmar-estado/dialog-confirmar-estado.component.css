@@ -1,0 +1,32 @@
+.enTransito {
+  padding: 5px;
+  text-align: center;
+  color: #856404;
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-radius: 20px;
+}
+
+.enEntregado {
+  padding: 5px;
+  text-align: center;
+  color: #004085;
+  background-color: #cce5ff;
+  border: 1px solid #b8daff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-radius: 20px;
+}
+
+.enCancelado {
+  padding: 5px;
+  text-align: center;
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-radius: 20px;
+}

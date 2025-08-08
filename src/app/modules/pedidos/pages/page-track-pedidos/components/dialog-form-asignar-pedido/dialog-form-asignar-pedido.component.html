@@ -51,14 +51,11 @@
             </mat-select>
         </mat-form-field>
 
-
-        <mat-form-field appearance="outline">
-            <mat-label>Estado Registro</mat-label>
-            <mat-select formControlName="estado">
-                <mat-option value="A"> Activo </mat-option>
-                <mat-option value="I"> Inactivo </mat-option>
-            </mat-select>
-        </mat-form-field>
+          <mat-form-field appearance="outline">
+                <mat-label>Comentarios</mat-label>
+                <textarea matInput formControlName="comentarios" rows="3"></textarea>
+            </mat-form-field>
+        
         <!-- <app-form-errors [form]="asignarForm" [errorMessages]="asignarErrorMessages"></app-form-errors> -->
 
     </form>

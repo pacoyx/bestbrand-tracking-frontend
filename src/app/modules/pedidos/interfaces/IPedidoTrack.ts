@@ -33,6 +33,7 @@ export interface IPedidoTrack {
   empresaTransporteId: number;
   conductorId: number;
   vehiculoId: number;
+  comentarios?: string;
 }
 
 export interface IPedidoAsignarRequest {
@@ -44,4 +45,5 @@ export interface IPedidoAsignarRequest {
   empresaTransporteId: number;
   conductorId: number;
   vehiculoId: number;
+  comentarios?: string;
 }

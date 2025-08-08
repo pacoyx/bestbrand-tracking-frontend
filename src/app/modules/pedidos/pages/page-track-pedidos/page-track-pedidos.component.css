@@ -28,3 +28,14 @@
 :host ::ng-deep .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) .mdc-evolution-chip__text-label {
     color: white;
 }
+
+.mat-column-factura{
+    text-align: center;
+    padding: 0px;
+    width: 100px;
+}
+
+.mat-column-prioridad{
+    text-align: center;    
+    width: 50px;
+}

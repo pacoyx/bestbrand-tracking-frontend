@@ -1,68 +1,122 @@
 <mat-sidenav-container class="example-container">
-    <!-- <mat-sidenav #sidenav mode="side" opened> -->
-    <mat-sidenav #sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile || sidenavOpened">
-    <mat-nav-list>
-        
-        
-        
-        <a mat-list-item [routerLink]="['/conductor/driverTrack']" routerLinkActive="router-link-active"
-        [routerLinkActiveOptions]="{ exact: true }">
-            <mat-icon>view_timeline</mat-icon>
-            DriverTrack
-        </a>
+  <!-- <mat-sidenav #sidenav mode="side" opened> -->
+  <mat-sidenav
+    #sidenav
+    [mode]="isMobile ? 'over' : 'side'"
+    [opened]="!isMobile || sidenavOpened"
+  >
+    <app-avatar></app-avatar>
 
-        
-        
-        <a mat-list-item [routerLink]="['/pedidos/trackpedidos']" routerLinkActive="router-link-active"
-        [routerLinkActiveOptions]="{ exact: true }">
+    <mat-nav-list>
+      <div
+        style="
+          width: 100%;
+          height: 85vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+        "
+      >
+        <div>
+          <a
+            mat-list-item
+            [routerLink]="['/conductor/driverTrack']"
+            routerLinkActive="router-link-active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <mat-icon>local_shipping</mat-icon>
+            DriverTrack
+          </a>
+
+          <a
+            mat-list-item
+            [routerLink]="['/pedidos/trackpedidos']"
+            routerLinkActive="router-link-active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
             <mat-icon>view_timeline</mat-icon>
             Pedidos
-        </a>
-        <a mat-list-item [routerLink]="['/pedidos/reportes']" routerLinkActive="router-link-active"
-        [routerLinkActiveOptions]="{ exact: true }">
+          </a>
+          <a
+            mat-list-item
+            [routerLink]="['/pedidos/reportes']"
+            routerLinkActive="router-link-active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
             <mat-icon>text_snippet</mat-icon>
             Reportes
-        </a>
-        <a mat-list-item [routerLink]="['/administracion']" routerLinkActive="router-link-active"
-        [routerLinkActiveOptions]="{ exact: true }">
+          </a>
+          <a
+            mat-list-item
+            [routerLink]="['/administracion']"
+            routerLinkActive="router-link-active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
             <mat-icon>account_box</mat-icon>
             Usuarios
-        </a>
-        <a mat-list-item [routerLink]="['/administracion/empresas']" routerLinkActive="router-link-active"
-        [routerLinkActiveOptions]="{ exact: true }">
+          </a>
+          <a
+            mat-list-item
+            [routerLink]="['/administracion/empresas']"
+            routerLinkActive="router-link-active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
             <mat-icon>corporate_fare</mat-icon>
             Empresa
-        </a>
-        <a mat-list-item [routerLink]="['/pedidos/conductor']" routerLinkActive="router-link-active"
-        [routerLinkActiveOptions]="{ exact: true }">
+          </a>
+          <a
+            mat-list-item
+            [routerLink]="['/pedidos/conductor']"
+            routerLinkActive="router-link-active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
             <mat-icon>person_apron</mat-icon>
             Conductor
-        </a>
-        <a mat-list-item [routerLink]="['/pedidos/vehiculo']" routerLinkActive="router-link-active"
-        [routerLinkActiveOptions]="{ exact: true }">
+          </a>
+          <a
+            mat-list-item
+            [routerLink]="['/pedidos/vehiculo']"
+            routerLinkActive="router-link-active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
             <mat-icon>local_shipping</mat-icon>
             Vehiculo
-        </a>
-
-        <a mat-list-item (click)="cerrarSesion()">
+          </a>
+        </div>
+        <div>
+          <hr />
+          <a mat-list-item (click)="cerrarSesion()">
             <mat-icon>logout</mat-icon>
             Cerrar Sesion
-        </a>
-    </mat-nav-list>
-    </mat-sidenav>
-
-    <mat-sidenav-content>
-        @if(isMobile){
-        <button mat-icon-button class="menu-button" (click)="openSidenav()"
-            style="position: fixed; top: 16px; left: 16px; z-index: 1000;">
-            <mat-icon>menu</mat-icon>
-        </button>
-        }
-
-        <div style="height: 100vh; display: flex; flex-direction: column; margin: 20px; margin-top: 0;">
-            <router-outlet></router-outlet>
+          </a>
         </div>
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
 
+  <mat-sidenav-content>
+    @if(isMobile){
+    <button
+      mat-icon-button
+      class="menu-button"
+      (click)="openSidenav()"
+      style="position: fixed; top: 16px; left: 16px; z-index: 1000"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+    }
 
-    </mat-sidenav-content>
+    <div
+      style="
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        margin: 20px;
+        margin-top: 0;
+      "
+    >
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
 </mat-sidenav-container>

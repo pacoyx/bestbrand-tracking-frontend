@@ -1,0 +1,16 @@
+<mat-stepper orientation="vertical"  #stepper>
+  @for (item of registros; track $index) {
+  <mat-step>
+    <ng-template matStepLabel
+      >{{ item.estadoRegistro }} |
+      {{ item.fechaRegistro | date : "shortTime" }}</ng-template
+    >
+    <ng-template matStepContent>
+      <p>
+        <span style="font-weight: 700">Comentarios: </span
+        >{{ item.comentarios }}
+      </p>
+    </ng-template>
+  </mat-step>
+  }
+</mat-stepper>

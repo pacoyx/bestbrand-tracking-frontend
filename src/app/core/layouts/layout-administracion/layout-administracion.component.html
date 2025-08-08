@@ -3,11 +3,11 @@
     <mat-sidenav #sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile || sidenavOpened">
     <mat-nav-list>
 
-
+<app-avatar></app-avatar>
 
         <a mat-list-item [routerLink]="['/conductor/driverTrack']" routerLinkActive="router-link-active"
         [routerLinkActiveOptions]="{ exact: true }">
-            <mat-icon>view_timeline</mat-icon>
+            <mat-icon>local_shipping</mat-icon>
             DriverTrack
         </a>
 

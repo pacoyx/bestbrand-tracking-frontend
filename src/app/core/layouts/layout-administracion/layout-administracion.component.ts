@@ -8,13 +8,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ToggleStoreService } from '../../services/toggle-store.service';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { AvatarComponent } from '../components/avatar/avatar.component';
 
 @Component({
   selector: 'app-layout-administracion',
   standalone: true,
   imports: [
     RouterModule, MatToolbarModule, MatIconModule, MatButtonModule, MatListModule, MatMenuModule,
-    MatSidenav, MatSidenavModule
+    MatSidenav, MatSidenavModule, AvatarComponent
   ],
   templateUrl: './layout-administracion.component.html',
   styleUrl: './layout-administracion.component.css'

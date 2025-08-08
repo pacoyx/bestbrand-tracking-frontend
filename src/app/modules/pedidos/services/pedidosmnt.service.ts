@@ -17,14 +17,12 @@ export class PedidosmntService {
 
 
   // ASIGNACION DE PEDIDOS ==================
-  asignarPedido(idPedido: number, data: any): Observable<IResponseGeneric<IPedidoAsignarRequest>> {
+  asignarPedido(idPedido: number, data: IPedidoAsignarRequest): Observable<IResponseGeneric<IPedidoAsignarRequest>> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.put<IResponseGeneric<IPedidoAsignarRequest>>(`${this.apiUrl}${environment.EPAsignarPedido}/${idPedido}`, data, { headers });
   }
 
-  listarPedidos(fecha: string): Observable<IResponseGeneric<IGetPedidosResponse[]>> {
-    console.log('Fecha de pedidos:', fecha);
-
+  listarPedidos(fecha: string ): Observable<IResponseGeneric<IGetPedidosResponse[]>> {    
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const params = { fecha };
     return this.http.get<IResponseGeneric<IGetPedidosResponse[]>>(`${this.apiUrl}${environment.EPListarPedidos}`, { headers, params });

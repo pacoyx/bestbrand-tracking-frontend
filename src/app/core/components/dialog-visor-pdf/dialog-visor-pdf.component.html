@@ -1,0 +1,12 @@
+<!-- <div style="background-color: #4b5563; color: white"> -->
+  <h2 mat-dialog-title>{{ title }}</h2>
+  <!-- <mat-dialog-actions style="display: flex; justify-content: space-evenly">
+    <button mat-flat-button mat-dialog-close>Cerrar</button>
+  </mat-dialog-actions> -->
+  <mat-dialog-content style="overflow-y: hidden; max-height: none;">
+    <ngx-extended-pdf-viewer
+      [src]="src"
+      [height]="'auto'"
+    ></ngx-extended-pdf-viewer>
+  </mat-dialog-content>
+

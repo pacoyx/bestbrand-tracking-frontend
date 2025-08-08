@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>Cambiar estado del pedido</h2>
+<mat-dialog-content>
+  <p>
+    ¿Está seguro de que desea cambiar el estado a
+    <strong
+      [ngClass]="{
+        enTransito: data.estado === 'EN_TRANSITO',
+        enEntregado: data.estado === 'ENTREGADO',
+        enCancelado: data.estado === 'CANCELADO',        
+      }"
+      >{{ data.estado }}</strong
+    >?
+  </p>
+  <p>Este cambio no se puede deshacer.</p>
+  <p>Por favor, confirme su acción.</p>
+
+  <mat-form-field appearance="outline" style="width: 100%">
+    <mat-label>Comentarios</mat-label>
+    <textarea
+      matInput
+      rows="3"
+      [(ngModel)]="txtComentarios"
+      placeholder="Comentarios (opcional)"
+    ></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button (click)="confirmar()" cdkFocusInitial>Confirmar</button>
+</mat-dialog-actions>

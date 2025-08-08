@@ -8,11 +8,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ToggleStoreService } from '../../services/toggle-store.service';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { AvatarComponent } from '../components/avatar/avatar.component';
 @Component({
   selector: 'app-layout-conductor',
   standalone: true,
   imports: [RouterModule, MatToolbarModule, MatIconModule, MatButtonModule, MatListModule, MatMenuModule,
-    MatSidenav, MatSidenavModule],
+    MatSidenav, MatSidenavModule, AvatarComponent],
   templateUrl: './layout-conductor.component.html',
   styleUrl: './layout-conductor.component.css'
 })
@@ -54,5 +55,20 @@ export class LayoutConductorComponent {
   openSidenav() {
     this.sidenavOpened = true;
     this.sidenav.open();
+  }
+
+
+
+
+  onNotifications() {
+    console.log('Notificaciones clicked');
+    // Implementar lógica de notificaciones
+    // Ejemplo: mostrar badge de notificaciones
+  }
+
+  onRefresh() {
+    console.log('Refresh clicked');
+    // Implementar lógica de refresh con feedback visual
+    // Ejemplo: mostrar spinner temporal
   }
 }

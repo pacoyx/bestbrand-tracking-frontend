@@ -2,7 +2,7 @@ import { provideExperimentalZonelessChangeDetection } from "@angular/core";
 
 export const environment = {
     production: false,
-    apiUrlBase: 'https://localhost:7130',
+    apiUrlBase: 'http://localhost:5000',
     EPlogin: '/api/auth/login',
     EPListarConductoresPaginado: '/api/v1/conductores',
     EPObtenerConductor: '/api/v1/conductores',
@@ -29,6 +29,9 @@ export const environment = {
 
     EPAsignarPedido: '/api/v1/pedidos/asignar',
     EPListarPedidos: '/api/v1/pedidos',
+    EPActualizarEstadoPedido: '/api/v1/pedidos/actualizar',
+    EPListarPedidosPorConductor: '/api/v1/pedidos/byConductor',
+    EPObtenerFacturaPdfPorPedido: '/api/v1/pedidos/pdf/facturaPdfByPedido',
 
     EPGetEmpresasTransporte: '/api/v1/empresas-transporte',
     EPGetEmpresasTransporteToHelp: '/api/v1/empresas-transporte',
@@ -36,6 +39,5 @@ export const environment = {
     EPCreateEmpresaTransporte: '/api/v1/empresas-transporte',
     EPUpdateEmpresaTransporte: '/api/v1/empresas-transporte',
 
-
-
 };
+// ng build --configuration=production --base-href "/apptracking/"

@@ -1,0 +1,72 @@
+<mat-card class="example-card" appearance="outlined">
+  <mat-card-header class="header-card" (click)="toggleBody()">
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      "
+    >
+      <div>
+        <mat-card-title>Pedido: {{ pedido.numero }}</mat-card-title>
+        <mat-card-subtitle>
+          <p
+            style="padding: 5px; text-align: center; margin-top: 5px;"
+            [ngClass]="{
+              enTransito: pedido.estadoPedido === 'EN_TRANSITO',
+              enEntregado: pedido.estadoPedido === 'ENTREGADO',
+              enCancelado: pedido.estadoPedido === 'CANCELADO',
+              asignado: pedido.estadoPedido === 'ASIGNADO'
+            }"
+          >
+            {{ pedido.estadoPedido }}
+          </p>
+        </mat-card-subtitle>
+      </div>
+      <div>
+        <button mat-mini-fab (click)="changeState($event)">
+          <mat-icon>swipe_up</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-card-header>
+  <!-- <img mat-card-image src="https://material.angular.dev/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+  @if(showBody){
+  <mat-card-content>
+    <div style="display: flex; flex-direction: column; margin-top: 10px">
+      <p>
+        <span style="font-weight: 700">Prioridad: </span> {{ pedido.prioridad }}
+      </p>
+      <p><span style="font-weight: 700">Cliente: </span>{{ pedido.cliente }}</p>
+      <p>
+        <span style="font-weight: 700">Dirección de Entrega: </span
+        >{{ pedido.direccionEntrega }}
+      </p>
+    </div>
+
+    @if(showDetails) {
+    <div class="details-container">
+      <app-estado-registro-detalle
+        [registros]="pedido.registros"
+      ></app-estado-registro-detalle>
+    </div>
+    }
+  </mat-card-content>
+
+  <mat-card-actions style="display: flex; justify-content: space-around">
+    @if(pedido.estadoPedido === 'ENTREGADO'){
+    <button mat-mini-fab>
+      <mat-icon>photo_camera</mat-icon>
+    </button>
+    }
+
+    <button mat-mini-fab (click)="verPdfFactura()">
+      <mat-icon>receipt</mat-icon>
+    </button>
+    <button mat-mini-fab (click)="toggleDetails()">
+      <mat-icon>format_list_numbered</mat-icon>
+    </button>
+  </mat-card-actions>
+  }
+</mat-card>

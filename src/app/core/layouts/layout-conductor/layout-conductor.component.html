@@ -1,39 +1,79 @@
+ <!-- Toolbar móvil fijo -->
+    @if(isMobile){
+<!-- Toolbar estilo Android en la parte superior -->
+<div class="android-toolbar">
+  <button class="android-toolbar-button" (click)="openSidenav()">
+    <mat-icon style="color: white;">menu</mat-icon>
+    <span>Menú</span>
+  </button>
+  
+  <button class="android-toolbar-button" (click)="onNotifications()">
+    <mat-icon style="color: white;">local_shipping</mat-icon>
+    <span>Operaciones</span>
+  </button>
+  
+  <button class="android-toolbar-button" (click)="cerrarSesion()">
+    <mat-icon style="color: white;">logout</mat-icon>
+    <span>Cerrar Sesión</span>
+  </button>
+</div>
+}
+
 <mat-sidenav-container class="example-container">
-    <!-- <mat-sidenav #sidenav mode="side" opened> -->
-    <mat-sidenav #sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile || sidenavOpened">
+  <!-- <mat-sidenav #sidenav mode="side" opened> -->
+  <mat-sidenav
+    #sidenav
+    [mode]="isMobile ? 'over' : 'side'"
+    [opened]="!isMobile || sidenavOpened"
+  >
     <mat-nav-list>
+      <app-avatar></app-avatar>
 
-        <a mat-list-item [routerLink]="['/pedidos/trackpedidos']" routerLinkActive="router-link-active"
-        [routerLinkActiveOptions]="{ exact: true }">
-            <mat-icon>view_timeline</mat-icon>
-            Pedidos
-        </a>
-        
-        <a mat-list-item [routerLink]="['/conductor/driverTrack']" routerLinkActive="router-link-active"
-        [routerLinkActiveOptions]="{ exact: true }">
-            <mat-icon>view_timeline</mat-icon>
-            Operaciones
+      <div
+        style="
+          width: 100%;
+          height: 85vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+        "
+      >
+        <a
+          mat-list-item
+          [routerLink]="['/conductor/driverTrack']"
+          routerLinkActive="router-link-active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <mat-icon>local_shipping</mat-icon>
+          Operaciones
         </a>
 
-        <a mat-list-item (click)="cerrarSesion()">
+        <div>
+          <hr />
+          <a mat-list-item (click)="cerrarSesion()">
             <mat-icon>logout</mat-icon>
             Cerrar Sesion
-        </a>
-    </mat-nav-list>
-    </mat-sidenav>
-
-    <mat-sidenav-content>
-        @if(isMobile){
-        <button mat-icon-button class="menu-button" (click)="openSidenav()"
-            style="position: fixed; top: 16px; left: 16px; z-index: 1000;">
-            <mat-icon>menu</mat-icon>
-        </button>
-        }
-
-        <div style="height: 100vh; display: flex; flex-direction: column; margin: 20px; margin-top: 0;">
-            <router-outlet></router-outlet>
+          </a>
         </div>
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
 
+  <mat-sidenav-content>
+@if(isMobile){
+      <button 
+        mat-icon-button
+        class="menu-button"
+        (click)="openSidenav()"        
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      }
 
-    </mat-sidenav-content>
+    <div class="container-layout">
+      
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
 </mat-sidenav-container>

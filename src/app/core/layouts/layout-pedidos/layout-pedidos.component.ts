@@ -8,14 +8,16 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ToggleStoreService } from '../../services/toggle-store.service';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { AvatarComponent } from "../components/avatar/avatar.component";
 
 @Component({
   selector: 'app-layout-pedidos',
   standalone: true,
   imports: [
     RouterModule, MatToolbarModule, MatIconModule, MatButtonModule, MatListModule, MatMenuModule,
-    MatSidenav, MatSidenavModule
-  ],
+    MatSidenav, MatSidenavModule,
+    AvatarComponent, AvatarComponent
+],
   templateUrl: './layout-pedidos.component.html',
   styleUrl: './layout-pedidos.component.css'
 })

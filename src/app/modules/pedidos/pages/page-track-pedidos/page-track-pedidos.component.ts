@@ -3,7 +3,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { DateAdapter, MAT_DATE_FORMATS, provideNativeDateAdapter } from '@angular/material/core';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
 import { CustomDateAdapter } from '../../../../core/configGlobal/custom-date-adapter';
 import { CUSTOM_DATE_FORMATS } from '../../../../core/configGlobal/custom-date-formats';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,20 +18,34 @@ import { PedidosmntService } from '../../services/pedidosmnt.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 import { DialogFormAsignarPedidoComponent } from './components/dialog-form-asignar-pedido/dialog-form-asignar-pedido.component';
-import { IGetPedidosResponse, IPedidoTrack } from '../../interfaces/IPedidoTrack';
+import {
+  IGetPedidosResponse,
+  IPedidoTrack,
+} from '../../interfaces/IPedidoTrack';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { AdminModService } from '../../../administracion/services/admin-mod.service';
 import { IGetConductoresToHelpResponse } from '../../../administracion/interfaces/IUser';
 import { IGetVehiculosToHelpResponse } from '../../interfaces/IVehiculo';
 import { IGetEmpresasTransporteToHelpResponse } from '../../interfaces/IEmpresaTransporte';
+import { LoadingComponent } from '../../../../core/components/loading/loading.component';
+import { DialogVisorPdfComponent } from '../../../../core/components/dialog-visor-pdf/dialog-visor-pdf.component';
 
 @Component({
   selector: 'app-page-track-pedidos',
   standalone: true,
   imports: [
-    MatIconModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, FormsModule,
-    MatButtonModule, MatTableModule, MatPaginatorModule, MatSortModule, MatChipsModule
+    MatIconModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatChipsModule,
+    LoadingComponent,
   ],
   providers: [
     provideNativeDateAdapter(),
@@ -35,10 +53,9 @@ import { IGetEmpresasTransporteToHelpResponse } from '../../interfaces/IEmpresaT
     { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
   ],
   templateUrl: './page-track-pedidos.component.html',
-  styleUrl: './page-track-pedidos.component.css'
+  styleUrl: './page-track-pedidos.component.css',
 })
 export class PageTrackPedidosComponent implements OnInit, OnDestroy {
-
   pedidoService = inject(PedidosmntService);
   adminOfService = inject(AdminModService);
 
@@ -46,12 +63,13 @@ export class PageTrackPedidosComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
   displayedColumns: string[] = [
     'actions',
+    'factura',
     'prioridad',
     'nropedido',
     'cliente',
     'direntrega',
-    'ubigeo',
-    'docguia',
+    // 'ubigeo',
+    // 'docguia',
     'transportista',
     'estadopedido',
   ];
@@ -77,7 +95,7 @@ export class PageTrackPedidosComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error al cargar los conductores:', error);
-      }
+      },
     });
 
     this.pedidoService.getVehiculosToHelp().subscribe({
@@ -89,7 +107,7 @@ export class PageTrackPedidosComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error al cargar los vehículos:', error);
-      }
+      },
     });
 
     this.adminOfService.getEmpresasTransporteToHelp().subscribe({
@@ -101,11 +119,9 @@ export class PageTrackPedidosComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error al cargar las empresas de transporte:', error);
-      }
+      },
     });
-
   }
-
 
   ngOnDestroy(): void {
     if (this.pedidosSubscription) {
@@ -114,42 +130,73 @@ export class PageTrackPedidosComponent implements OnInit, OnDestroy {
   }
 
   cargarPedidos() {
-
     // Restar la diferencia horaria UTC con Perú (-5 horas)
-    const fechaPeru = new Date(this.fechaHoy.getTime() - (5 * 60 * 60 * 1000));
+    const fechaPeru = new Date(this.fechaHoy.getTime() - 5 * 60 * 60 * 1000);
     let fecha = fechaPeru.toISOString().split('T')[0]; // Formatear la fecha a YYYY-MM-DD
     console.log('Fecha seleccionada:', fecha);
 
     this.loading = true;
-    this.pedidosSubscription = this.pedidoService.listarPedidos(fecha).subscribe({
-      next: (response) => {
-        if (response.success) {
-          console.log('Pedidos cargados:', response.data);
+    this.pedidosSubscription = this.pedidoService
+      .listarPedidos(fecha)
+      .subscribe({
+        next: (response) => {
+          if (response.success) {
+            console.log('Pedidos cargados:', response.data);
 
-          this.dataSource = new MatTableDataSource(response.data);
-        } else {
-          console.error('Error al cargar los pedidos:', response.message);
-        }
-        this.loading = false;
+            this.dataSource = new MatTableDataSource(response.data);
+          } else {
+            console.error('Error al cargar los pedidos:', response.message);
+          }
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error al cargar los pedidos:', error);
+          this.loading = false;
+        },
+      });
+  }
+
+  asignarConductor(pedido: IPedidoTrack) {
+    const dialogRef = this.dialog.open(DialogFormAsignarPedidoComponent, {
+      data: {
+        objPedido: pedido,
+        objEmpresas: this.empresas,
+        objConductores: this.conductores,
+        objVehiculos: this.vehiculos,
       },
-      error: (error) => {
-        console.error('Error al cargar los pedidos:', error);
-        this.loading = false;
+      width: '500px',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.cargarPedidos(); // Recargar la lista de pedidos después de la asignación
       }
     });
   }
 
-
-  asignarConductor(pedido: IPedidoTrack) {
-    const dialogRef = this.dialog.open(DialogFormAsignarPedidoComponent, {
-      data: { objPedido: pedido, objEmpresas: this.empresas, objConductores: this.conductores, objVehiculos: this.vehiculos },
-      width: '500px'
+  verFactura(pedido: IPedidoTrack) {
+    console.log('Ver factura para el pedido:', pedido);
+    this.dialog.open(DialogVisorPdfComponent, {
+      data: {
+        objPedido: pedido,
+      },
+      width: '90vw',
+      height: '90vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
     });
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.cargarPedidos(); // Recargar la lista de pedidos después de la asignación
-      }
+  verGuia(pedido: IPedidoTrack) {
+    console.log('Ver guía para el pedido:', pedido);
+    this.dialog.open(DialogVisorPdfComponent, {
+      data: {
+        objPedido: pedido,
+      },
+      width: '90vw',
+      height: '90vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
     });
   }
 

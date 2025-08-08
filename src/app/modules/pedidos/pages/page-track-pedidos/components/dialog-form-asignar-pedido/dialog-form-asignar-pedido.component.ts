@@ -17,7 +17,8 @@ import { IGetVehiculosToHelpResponse } from '../../../../interfaces/IVehiculo';
 @Component({
   selector: 'app-dialog-form-asignar-pedido',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule,
+  imports: [
+    FormsModule, ReactiveFormsModule, MatFormFieldModule,
     MatInputModule, MatDialogActions, MatDialogTitle,
     MatDialogContent, MatIconModule, 
     MatButtonModule, MatSelectModule],
@@ -58,21 +59,20 @@ export class DialogFormAsignarPedidoComponent implements OnInit, OnDestroy {
       prioridad: [0, Validators.required],
       empresa: ['', Validators.required],
       conductor: ['', Validators.required],
-      vehiculo: ['', Validators.required],
-      estado: ['', Validators.required]
+      vehiculo: ['', Validators.required],      
+      comentarios: ['']
     });
   }
 
-  ngOnInit(): void {
-    console.log(this.data);
-    this.displayNroPedido = this.data.objPedido.serie + '-' + this.data.objPedido.numero;
+  ngOnInit(): void {    
+    this.displayNroPedido = this.data.objPedido.numero;
     this.asignarForm.patchValue({
       id: this.data.objPedido.id,
       prioridad: this.data.objPedido.prioridad,
       empresa: this.data.objPedido.empresaTransporteId,
       conductor: this.data.objPedido.conductorId,
       vehiculo: this.data.objPedido.vehiculoId,
-      estado: this.data.objPedido.estadoPedido
+      comentarios: this.data.objPedido.comentarios
     });
   }
 
@@ -87,18 +87,9 @@ export class DialogFormAsignarPedidoComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const asignacionData = this.asignarForm.value;
-    // const asignacionDataCreate: any = asignacionData;
-    // const asigancionDataUpdate: any = asignacionData;
-
-
+    const asignacionData = this.asignarForm.value;    
     this.loadingSave = true;
-
-    // const request$: Observable<IResponseGeneric<ICreateVehiculoRequest> | IResponseGeneric<IUpdateVehiculoRequest>> = this.data.esNuevo
-    //   ? this.pedidosService.createVehiculo(asignacionDataCreate)
-    //   : this.pedidosService.updateVehiculo(asigancionDataUpdate);
-
-
+    
     // Obtener el texto seleccionado del select de empresa
     const empresaObj = this.data.objEmpresas.find(e => e.id === asignacionData.empresa);
     const conductorObj = this.data.objConductores.find(c => c.id === asignacionData.conductor);
@@ -112,7 +103,8 @@ export class DialogFormAsignarPedidoComponent implements OnInit, OnDestroy {
       prioridad: asignacionData.prioridad,
       conductorId: asignacionData.conductor,
       vehiculoId: asignacionData.vehiculo,
-      empresaTransporteId: asignacionData.empresa
+      empresaTransporteId: asignacionData.empresa,
+      comentarios: asignacionData.comentarios
     }
 
     this.regAsignacionSuscripcion = this.pedidosService.asignarPedido(asignacionData.id, req).subscribe({
