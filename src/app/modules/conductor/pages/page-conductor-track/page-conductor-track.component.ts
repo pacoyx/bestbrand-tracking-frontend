@@ -95,15 +95,14 @@ export class PageConductorTrackComponent implements OnInit, OnDestroy {
     // Restar la diferencia horaria UTC con Perú (-5 horas)
     const fechaPeru = new Date(this.fechaHoy.getTime() - 5 * 60 * 60 * 1000);
     let fecha = fechaPeru.toISOString().split('T')[0]; // Formatear la fecha a YYYY-MM-DD
-    console.log('Fecha seleccionada:', fecha);
+    
 
     this.loading = true;
     this.pedidosSubscription = this.conductorService
       .listarPedidos(fecha, this.driverId)
       .subscribe({
         next: (response) => {
-          if (response.success) {
-            console.log('Pedidos cargados:', response.data);
+          if (response.success) {    
             this.dataPedidos = response.data;
             this.dataSource = new MatTableDataSource(response.data);
           } else {
@@ -118,8 +117,7 @@ export class PageConductorTrackComponent implements OnInit, OnDestroy {
       });
   }
 
-  verPdfFactura(pedido: IGetPedidosResponse) {
-    console.log('Ver PDF de factura para el pedido:', pedido.numero);
+  verPdfFactura(pedido: IGetPedidosResponse) {   
 
     this.conductorService.obtenerFacturaPdfPorPedido(pedido.numero).subscribe({
       next: (blob) => {
@@ -139,8 +137,7 @@ export class PageConductorTrackComponent implements OnInit, OnDestroy {
   cambiarEstadoPedido(
     nuevoEstado: { estado: string; comentarios?: string },
     pedidoId: number
-  ) {
-    console.log('Nuevo estado del pedido:', nuevoEstado);
+  ) {    
     const fechaPeru = new Date(new Date().getTime() - 5 * 60 * 60 * 1000);
     let fechaEntrega = fechaPeru.toISOString().split('T')[0]; // Formatear la fecha a YYYY-MM-DD
 

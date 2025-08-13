@@ -61,7 +61,7 @@ export class DialogFormActualizarEstadoPedidoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('Datos del pedido:', this.data);
+    
     if (this.data) {
       this.asignarForm.patchValue({
         id: this.data.pedido.id,
@@ -87,8 +87,7 @@ export class DialogFormActualizarEstadoPedidoComponent implements OnInit {
       nombreFoto: '', 
       conductorId: this.data.pedido.conductorId || 0, // Asignar el ID del conductor si está disponible
     };
-    console.log('Datos a enviar:', data);
-
+    
     this.conductorService
       .actualizarEstadoPedido(data.pedidoId, data)
       .subscribe({

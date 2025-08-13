@@ -1,0 +1,81 @@
+<h2 mat-dialog-title>
+  <mat-icon>photo_camera</mat-icon>
+  Tomar Fotografía
+</h2>
+
+<mat-dialog-content>
+  <div class="webcam-container">
+    <!-- Mostrar webcam cuando no hay imagen capturada -->
+    @if(showWebcam && !webcamImage){
+    <div class="camera-section">
+      <webcam
+        [trigger]="triggerObservable"
+        (imageCapture)="handleImage($event)"
+        (initError)="handleInitError($event)"
+        [allowCameraSwitch]="true"
+        [videoOptions]="{ facingMode: 'environment' }"
+        [captureImageData]="true"
+      >
+      </webcam>
+
+      <!-- Botón para tomar foto -->
+      <div class="capture-controls">
+        <button
+          mat-fab
+          color="primary"
+          (click)="triggerSnapshot()"
+          class="capture-button"
+        >
+          <mat-icon>camera_alt</mat-icon>
+        </button>
+      </div>
+    </div>
+    }
+
+    <!-- Mostrar imagen capturada -->
+    @if(webcamImage){
+    <div class="image-preview">
+      <img
+        [src]="webcamImage!.imageAsDataUrl"
+        alt="Foto capturada"
+        class="captured-image"
+      />
+
+      <div class="preview-controls">
+        <button mat-raised-button (click)="retakePhoto()" color="primary">
+          <mat-icon>refresh</mat-icon>
+          Tomar otra foto
+        </button>
+      </div>
+    </div>
+    }
+    <!-- Mostrar errores si los hay -->
+    @if(errors.length > 0){
+    <div class="error-section">
+      <p class="error-message">
+        <mat-icon>error</mat-icon>
+        Error al acceder a la cámara: {{ errors[0].message }}
+      </p>
+    </div>
+    }
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div style="display: flex; justify-content: space-between; width: 100%;">
+    <button mat-button color="warn" (click)="cancelar()">
+      <mat-icon>cancel</mat-icon>
+      Cancelar
+    </button>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="confirmar()"
+      [disabled]="!webcamImage"
+    >
+      <mat-icon>check</mat-icon>
+      Confirmar
+    </button>
+  </div>
+</mat-dialog-actions>

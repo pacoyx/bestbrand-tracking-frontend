@@ -30,6 +30,8 @@ import { IGetVehiculosToHelpResponse } from '../../interfaces/IVehiculo';
 import { IGetEmpresasTransporteToHelpResponse } from '../../interfaces/IEmpresaTransporte';
 import { LoadingComponent } from '../../../../core/components/loading/loading.component';
 import { DialogVisorPdfComponent } from '../../../../core/components/dialog-visor-pdf/dialog-visor-pdf.component';
+import { DialogVisorImgComponent } from './components/dialog-visor-img/dialog-visor-img.component';
+import { EstadoRegistroDetalleComponent } from '../../../conductor/pages/page-conductor-track/components/estado-registro-detalle/estado-registro-detalle.component';
 
 @Component({
   selector: 'app-page-track-pedidos',
@@ -46,6 +48,7 @@ import { DialogVisorPdfComponent } from '../../../../core/components/dialog-viso
     MatSortModule,
     MatChipsModule,
     LoadingComponent,
+    EstadoRegistroDetalleComponent,
   ],
   providers: [
     provideNativeDateAdapter(),
@@ -57,8 +60,7 @@ import { DialogVisorPdfComponent } from '../../../../core/components/dialog-viso
 })
 export class PageTrackPedidosComponent implements OnInit, OnDestroy {
   pedidoService = inject(PedidosmntService);
-  adminOfService = inject(AdminModService);
-
+  
   pedidosSubscription!: Subscription;
   dialog = inject(MatDialog);
   displayedColumns: string[] = [
@@ -73,6 +75,9 @@ export class PageTrackPedidosComponent implements OnInit, OnDestroy {
     'transportista',
     'estadopedido',
   ];
+
+  columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
+
   fechaHoy: Date = new Date();
   dataSource = new MatTableDataSource<IGetPedidosResponse>([]);
   loading = false;
@@ -80,9 +85,20 @@ export class PageTrackPedidosComponent implements OnInit, OnDestroy {
   empresas: IGetEmpresasTransporteToHelpResponse[] = [];
   conductores: IGetConductoresToHelpResponse[] = [];
   vehiculos: IGetVehiculosToHelpResponse[] = [];
+  expandedElement: IGetPedidosResponse | null = null;
 
   ngOnInit(): void {
     this.cargarCombos();
+  }
+
+  /** Checks whether an element is expanded. */
+  isExpanded(element: IGetPedidosResponse) {
+    return this.expandedElement === element;
+  }
+
+  /** Toggles the expanded state of an element. */
+  toggle(element: IGetPedidosResponse) {
+    this.expandedElement = this.isExpanded(element) ? null : element;
   }
 
   cargarCombos() {
@@ -110,7 +126,7 @@ export class PageTrackPedidosComponent implements OnInit, OnDestroy {
       },
     });
 
-    this.adminOfService.getEmpresasTransporteToHelp().subscribe({
+    this.pedidoService.getEmpresasTransporteToHelp().subscribe({
       next: (response) => {
         if (response.success) {
           console.log('Empresas de transporte para ayudar:', response.data);
@@ -156,6 +172,14 @@ export class PageTrackPedidosComponent implements OnInit, OnDestroy {
       });
   }
 
+  verFoto(pedido: IPedidoTrack) {
+    this.dialog.open(DialogVisorImgComponent, {
+      data: {
+        nombreFoto: '',
+      },
+    });
+  }
+
   asignarConductor(pedido: IPedidoTrack) {
     const dialogRef = this.dialog.open(DialogFormAsignarPedidoComponent, {
       data: {
@@ -199,5 +223,4 @@ export class PageTrackPedidosComponent implements OnInit, OnDestroy {
       maxHeight: '100vh',
     });
   }
-
 }

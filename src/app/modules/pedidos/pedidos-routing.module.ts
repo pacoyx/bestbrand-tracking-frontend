@@ -4,18 +4,19 @@ import { PageConductoresComponent } from './pages/page-conductores/page-conducto
 import { PageVehiculosComponent } from './pages/page-vehiculos/page-vehiculos.component';
 import { PageTrackPedidosComponent } from './pages/page-track-pedidos/page-track-pedidos.component';
 import { PageReportesComponent } from './pages/page-reportes/page-reportes.component';
+import { PageAsignarPedidoComponent } from './pages/page-asignar-pedido/page-asignar-pedido.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'trackpedidos', pathMatch: 'full' },
-  { path: 'trackpedidos', component: PageTrackPedidosComponent },
+  { path: '', redirectTo: 'tracking', pathMatch: 'full' },
+  { path: 'tracking', component: PageTrackPedidosComponent },
+  { path: 'asignar', component: PageAsignarPedidoComponent },
   { path: 'conductor', component: PageConductoresComponent },
   { path: 'vehiculo', component: PageVehiculosComponent },
-  { path: 'reportes', component: PageReportesComponent }
-
+  { path: 'reportes', component: PageReportesComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class PedidosRoutingModule { }
+export class PedidosRoutingModule {}

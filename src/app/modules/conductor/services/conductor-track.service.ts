@@ -6,6 +6,7 @@ import { environment } from '../../../../environments/environment';
 import {
   IActualizarEstadoPedidoRequest,
   IGetPedidosResponse,
+  IPedidoImagenBase64DtoRequest,
 } from '../interfaces/IOperaciones';
 
 @Injectable({
@@ -40,14 +41,37 @@ export class ConductorTrackService {
     );
   }
 
-obtenerFacturaPdfPorPedido(
-    idPedido: string
-  ): Observable<Blob> {
+  obtenerFacturaPdfPorPedido(idPedido: string): Observable<Blob> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.get(`${this.apiUrl}${environment.EPObtenerFacturaPdfPorPedido}/${idPedido}`, {
-      headers,
-      responseType: 'blob',
-    });
+    return this.http.get(
+      `${this.apiUrl}${environment.EPObtenerFacturaPdfPorPedido}/${idPedido}`,
+      {
+        headers,
+        responseType: 'blob',
+      }
+    );
   }
 
+  obtenerImagenPorPedido(nombreImagen: string): Observable<Blob> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.get(
+      `${this.apiUrl}${environment.EPObtenerImagenPorPedido}/${nombreImagen}`,
+      {
+        headers,
+        responseType: 'blob',
+      }
+    );
+  }
+
+  uploadImagen(
+    pedidoId: number,
+    req: IPedidoImagenBase64DtoRequest
+  ): Observable<IResponseGeneric<string>> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<IResponseGeneric<string>>(
+      `${this.apiUrl}${environment.EPUploadImagenPorPedido}/${pedidoId}`,
+      req,
+      { headers }
+    );
+  }
 }

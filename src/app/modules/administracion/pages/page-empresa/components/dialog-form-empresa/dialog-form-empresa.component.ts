@@ -12,6 +12,7 @@ import { IResponseGeneric } from '../../../../../../core/interfaces/ICommons';
 import { FormErrorsComponent } from '../../../../../../core/components/form-errors/form-errors.component';
 import { AdminModService } from '../../../../services/admin-mod.service';
 import { ICreateEmpresaTransporteRequest, ICreateEmpresaTransporteResponse, IUpdateEmpresaTransporteRequest } from '../../../../../pedidos/interfaces/IEmpresaTransporte';
+import { PedidosmntService } from '../../../../../pedidos/services/pedidosmnt.service';
 
 
 @Component({
@@ -26,7 +27,7 @@ import { ICreateEmpresaTransporteRequest, ICreateEmpresaTransporteResponse, IUpd
 })
 export class DialogFormEmpresaComponent implements OnInit, OnDestroy {
   readonly data = inject<{ esNuevo: boolean, objEmpresa: any }>(MAT_DIALOG_DATA);
-  adminOfService = inject(AdminModService);
+  adminOfService = inject(PedidosmntService);
   empresaForm: FormGroup;
   loadingSave = false;
   titulo = this.data.esNuevo ? 'Registrar Empresa' : 'Actualizar Empresa';

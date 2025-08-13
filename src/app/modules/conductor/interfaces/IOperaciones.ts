@@ -25,10 +25,11 @@ export interface IGetPedidosResponse {
 }
 
 export interface IPedidoRegistros {
-  id: number;  
+  id: number;
   fechaRegistro: string;
   estadoRegistro: string;
-  comentarios: string;  
+  comentarios: string;
+  nombreFoto: string;
 }
 
 export interface IActualizarEstadoPedidoRequest {
@@ -38,4 +39,8 @@ export interface IActualizarEstadoPedidoRequest {
   fechaEntrega: string;
   nombreFoto: string;
   conductorId: number;
+}
+
+export interface IPedidoImagenBase64DtoRequest {
+  imagenBase64: string;
 }

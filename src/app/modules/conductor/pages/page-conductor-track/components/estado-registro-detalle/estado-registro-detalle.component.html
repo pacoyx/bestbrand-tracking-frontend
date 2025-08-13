@@ -1,15 +1,26 @@
-<mat-stepper orientation="vertical"  #stepper>
+<mat-stepper [orientation]="orientation"  #stepper>
   @for (item of registros; track $index) {
   <mat-step>
-    <ng-template matStepLabel
-      >{{ item.estadoRegistro }} |
-      {{ item.fechaRegistro | date : "shortTime" }}</ng-template
-    >
+    <ng-template matStepLabel>{{ item.estadoRegistro }} |
+      {{ item.fechaRegistro | date : "shortTime" }}
+    </ng-template>
     <ng-template matStepContent>
       <p>
-        <span style="font-weight: 700">Comentarios: </span
-        >{{ item.comentarios }}
+        <span style="font-weight: 700">Comentarios: </span>{{ item.comentarios }}
       </p>
+      @if(item.nombreFoto){      
+      <div style="display: flex; flex-direction: column; align-items: flex-start;">
+        <button mat-raised-button (click)="verImagen(item.nombreFoto)">
+          Ver Imagen
+          @if(loadingImage){
+            <app-loading [diameter]="30"></app-loading>    
+          }
+        </button>
+        @if(showImagen){
+          <img [src]="imagenUrl" alt="Imagen entregado" class="container-img">
+        }
+      </div>
+    }
     </ng-template>
   </mat-step>
   }

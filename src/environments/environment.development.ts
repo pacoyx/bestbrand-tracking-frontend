@@ -25,10 +25,13 @@ export const environment = {
     EPDeleteUser: '/api/v1/user',
 
     EPAsignarPedido: '/api/v1/pedidos/asignar',    
+    EPAsignarPedidoMasivo: '/api/v1/pedidos/asignarPedidoMasivo',
     EPListarPedidos: '/api/v1/pedidos',
     EPActualizarEstadoPedido: '/api/v1/pedidos/actualizar',
     EPListarPedidosPorConductor: '/api/v1/pedidos/byConductor',
     EPObtenerFacturaPdfPorPedido: '/api/v1/pedidos/pdf/facturaPdfByPedido',
+    EPObtenerImagenPorPedido: '/api/v1/pedidos/imagenesEntregado',
+    EPUploadImagenPorPedido: '/api/v1/pedidos/upload/foto',
 
     EPGetEmpresasTransporte: '/api/v1/empresas-transporte',
     EPGetEmpresasTransporteToHelp: '/api/v1/empresas-transporte',

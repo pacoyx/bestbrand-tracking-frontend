@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ICreateUsuarioRequest, ICreateUsuarioResponse, IGetConductoresToHelpResponse, IGetUsersPaginadoResponse, IUpdateUsuarioRequest, IUpdateUsuarioResponse } from '../interfaces/IUser';
 import { IResponseGeneric } from '../../../core/interfaces/ICommons';
-import { ICreateEmpresaTransporteRequest, ICreateEmpresaTransporteResponse, IGetEmpresasTransporteResponse, IUpdateEmpresaTransporteRequest } from '../../pedidos/interfaces/IEmpresaTransporte';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,32 +14,6 @@ export class AdminModService {
   private apiUrl = environment.apiUrlBase;
   constructor(private http: HttpClient) { }
 
-
-  // EMPRESA TRANSPORTE ============
-  getEmpresasTransporte(): Observable<IResponseGeneric<IGetEmpresasTransporteResponse[]>> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.get<IResponseGeneric<IGetEmpresasTransporteResponse[]>>(`${this.apiUrl}${environment.EPGetEmpresasTransporte}`, { headers });
-  }
-
-  getEmpresasTransportePaginado(page: number, pageSize: number, filtro: string): Observable<IResponseGeneric<IGetEmpresasTransporteResponse[]>> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const params = { razonSocial: filtro };
-    return this.http.get<IResponseGeneric<IGetEmpresasTransporteResponse[]>>(`${this.apiUrl}${environment.EPGetEmpresasTransportePaginator}/${page}/${pageSize}`, { headers, params });
-  }
-
-  getEmpresasTransporteToHelp(): Observable<IResponseGeneric<IGetEmpresasTransporteResponse[]>> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.get<IResponseGeneric<IGetEmpresasTransporteResponse[]>>(`${this.apiUrl}${environment.EPGetEmpresasTransporteToHelp}`, { headers });
-  }
-
-  createEmpresaTransporte(data: ICreateEmpresaTransporteRequest): Observable<IResponseGeneric<ICreateEmpresaTransporteResponse>> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<IResponseGeneric<ICreateEmpresaTransporteResponse>>(`${this.apiUrl}${environment.EPCreateEmpresaTransporte}`, data, { headers });
-  }
-  updateEmpresaTransporte(data: IUpdateEmpresaTransporteRequest): Observable<IResponseGeneric<boolean>> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.put<IResponseGeneric<boolean>>(`${this.apiUrl}${environment.EPUpdateEmpresaTransporte}/${data.id}`, data, { headers });
-  }
 
 
   // USUARIOS ==================

@@ -12,7 +12,7 @@
         <mat-card-title>Pedido: {{ pedido.numero }}</mat-card-title>
         <mat-card-subtitle>
           <p
-            style="padding: 5px; text-align: center; margin-top: 5px;"
+            style="padding: 5px; text-align: center; margin-top: 5px"
             [ngClass]="{
               enTransito: pedido.estadoPedido === 'EN_TRANSITO',
               enEntregado: pedido.estadoPedido === 'ENTREGADO',
@@ -56,12 +56,12 @@
 
   <mat-card-actions style="display: flex; justify-content: space-around">
     @if(pedido.estadoPedido === 'ENTREGADO'){
-    <button mat-mini-fab>
+    <button mat-mini-fab (click)="takePhoto()">
       <mat-icon>photo_camera</mat-icon>
     </button>
     }
 
-    <button mat-mini-fab (click)="verPdfFactura()">
+    <button mat-mini-fab (click)="downloadPdfInvoice()">
       <mat-icon>receipt</mat-icon>
     </button>
     <button mat-mini-fab (click)="toggleDetails()">

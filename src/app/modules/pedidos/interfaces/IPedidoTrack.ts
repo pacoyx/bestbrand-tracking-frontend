@@ -47,3 +47,24 @@ export interface IPedidoAsignarRequest {
   vehiculoId: number;
   comentarios?: string;
 }
+
+export interface IDataTransporteAsignarRequest {
+  transEmpresa: string;
+  transConductor: string;
+  transVehiculo: string;  
+  empresaTransporteId: number;
+  conductorId: number;
+  vehiculoId: number;
+  comentarios?: string;
+}
+
+
+export interface IPedidosAsignadosRequest{
+  pedidoId:number;
+  prioridad:number;
+}
+
+export interface IPedidoAsigandoV2Rquest{
+  DataTransporte: IDataTransporteAsignarRequest,
+  DataPedidosAsignados: IPedidosAsignadosRequest[],
+}

@@ -19,7 +19,7 @@
         "
       >
         <div>
-          <a
+          <!-- <a
             mat-list-item
             [routerLink]="['/conductor/driverTrack']"
             routerLinkActive="router-link-active"
@@ -27,17 +27,27 @@
           >
             <mat-icon>local_shipping</mat-icon>
             DriverTrack
-          </a>
+          </a> -->
 
           <a
             mat-list-item
-            [routerLink]="['/pedidos/trackpedidos']"
+            [routerLink]="['/pedidos/asignar']"
             routerLinkActive="router-link-active"
             [routerLinkActiveOptions]="{ exact: true }"
           >
             <mat-icon>view_timeline</mat-icon>
-            Pedidos
+            Asignar Pedidos
           </a>
+          <a
+            mat-list-item
+            [routerLink]="['/pedidos/tracking']"
+            routerLinkActive="router-link-active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <mat-icon>view_timeline</mat-icon>
+            Tracking
+          </a>
+
           <a
             mat-list-item
             [routerLink]="['/pedidos/reportes']"

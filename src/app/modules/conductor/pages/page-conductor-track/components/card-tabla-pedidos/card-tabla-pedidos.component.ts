@@ -1,6 +1,9 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { IGetPedidosResponse } from '../../../../interfaces/IOperaciones';
+import {
+  IGetPedidosResponse,
+  IPedidoImagenBase64DtoRequest,
+} from '../../../../interfaces/IOperaciones';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { NgClass } from '@angular/common';
@@ -9,6 +12,8 @@ import { EstadoRegistroDetalleComponent } from '../estado-registro-detalle/estad
 import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmarEstadoComponent } from '../dialog-confirmar-estado/dialog-confirmar-estado.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { DialogWebcamComponent } from '../dialog-webcam/dialog-webcam.component';
+import { ConductorTrackService } from '../../../../services/conductor-track.service';
 
 @Component({
   selector: 'app-card-tabla-pedidos',
@@ -33,21 +38,58 @@ export class CardTablaPedidosComponent {
   }>();
   dialog = inject(MatDialog);
   private _snackBar = inject(MatSnackBar);
+  conductorTrackService = inject(ConductorTrackService);
   cont = 0;
   estadosPosibles = ['EN_TRANSITO', 'ENTREGADO', 'CANCELADO'];
   showDetails = false;
   showBody = false;
 
-  actualizarEstadoPedido() {
-    // Lógica para actualizar el estado del pedido
+  takePhoto() {
+    console.log('Tomando foto...');
+
+    const dialogRef = this.dialog.open(DialogWebcamComponent, {
+      width: '80vw',
+      height: '80vh',
+      maxWidth: '800px',
+      data: {
+        /* datos adicionales si necesitas */
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.ok) {        
+        // result.imageAsDataUrl - para mostrar la imagen
+        // result.imageAsBase64 - para enviar al servidor
+        // Enviar imagen al servidor
+        this.enviarImagenAlServidor(result.imageAsBase64);
+      }
+    });
   }
-  verPdfFactura() {
-    // Lógica para ver el PDF de la factura del pedido
+  enviarImagenAlServidor(imageAsBase64: any) {    
+    let request: IPedidoImagenBase64DtoRequest = {
+      imagenBase64: imageAsBase64,
+    };
+    this.conductorTrackService.uploadImagen(this.pedido.id, request).subscribe({
+      next: (response) => {        
+        this._snackBar.open('Imagen enviada exitosamente', 'Cerrar', {
+          duration: 3000,
+        });
+      },
+      error: (error) => {
+        console.error('Error al enviar la imagen:', error);
+        this._snackBar.open('Error al enviar la imagen', 'Cerrar', {
+          duration: 3000,
+        });
+      },
+    });
+  }
+
+  downloadPdfInvoice() {
+    console.log('Descargando PDF de la factura...');
   }
 
   changeState(event: Event) {
-    event.stopPropagation();
-    console.log('Estado del pedido cambiado:', this.pedido.estadoPedido);
+    event.stopPropagation();    
 
     if (this.pedido.estadoPedido === 'CANCELADO') {
       this._snackBar.open('No se puede cambiar el estado', 'Cerrar', {
@@ -82,7 +124,7 @@ export class CardTablaPedidosComponent {
     this.showBody = !this.showBody;
   }
 
-getNuevoEstado(estadoActual: string): string {
+  getNuevoEstado(estadoActual: string): string {
     if (estadoActual === 'EN_TRANSITO') {
       return 'ENTREGADO';
     } else if (estadoActual === 'ENTREGADO') {
@@ -93,5 +135,4 @@ getNuevoEstado(estadoActual: string): string {
       return 'EN_TRANSITO';
     }
   }
-
 }

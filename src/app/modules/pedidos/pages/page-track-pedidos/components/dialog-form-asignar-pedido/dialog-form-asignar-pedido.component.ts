@@ -1,14 +1,23 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogActions,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { PedidosmntService } from '../../../../services/pedidosmnt.service';
-import { IGetPedidosResponse, IPedidoAsignarRequest } from '../../../../interfaces/IPedidoTrack';
+import {
+  IGetPedidosResponse,
+  IPedidoAsignarRequest,
+} from '../../../../interfaces/IPedidoTrack';
 import { Subscription } from 'rxjs';
 import { IGetEmpresasTransporteToHelpResponse } from '../../../../interfaces/IEmpresaTransporte';
 import { IGetConductoresToHelpResponse } from '../../../../../administracion/interfaces/IUser';
@@ -18,31 +27,38 @@ import { IGetVehiculosToHelpResponse } from '../../../../interfaces/IVehiculo';
   selector: 'app-dialog-form-asignar-pedido',
   standalone: true,
   imports: [
-    FormsModule, ReactiveFormsModule, MatFormFieldModule,
-    MatInputModule, MatDialogActions, MatDialogTitle,
-    MatDialogContent, MatIconModule, 
-    MatButtonModule, MatSelectModule],
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogActions,
+    MatDialogTitle,
+    MatDialogContent,
+    MatIconModule,
+    MatButtonModule,
+    MatSelectModule,
+  ],
   templateUrl: './dialog-form-asignar-pedido.component.html',
-  styleUrl: './dialog-form-asignar-pedido.component.css'
+  styleUrl: './dialog-form-asignar-pedido.component.css',
 })
 export class DialogFormAsignarPedidoComponent implements OnInit, OnDestroy {
-
   asignarErrorMessages = {
     prioridad: { required: 'El numero de prioridad es obligatorio.' },
     empresa: { required: 'El nombre de empresa es obligatorio.' },
     conductor: { required: 'El conductor es obligatorio.' },
     vehiculo: { required: 'El vehiculo es obligatorio.' },
-    estado: { required: 'El estado es obligatorio.' }
+    estado: { required: 'El estado es obligatorio.' },
   };
 
   prioridades = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  readonly data = inject<{ 
-      esNuevo: boolean, 
-      objPedido: IGetPedidosResponse, 
-      objEmpresas: IGetEmpresasTransporteToHelpResponse[], 
-      objConductores: IGetConductoresToHelpResponse[], 
-      objVehiculos: IGetVehiculosToHelpResponse[] }>(MAT_DIALOG_DATA);
+  readonly data = inject<{
+    esNuevo: boolean;
+    objPedido: IGetPedidosResponse;
+    objEmpresas: IGetEmpresasTransporteToHelpResponse[];
+    objConductores: IGetConductoresToHelpResponse[];
+    objVehiculos: IGetVehiculosToHelpResponse[];
+  }>(MAT_DIALOG_DATA);
   pedidosService = inject(PedidosmntService);
   loadingSave = false;
   asignarForm: FormGroup;
@@ -52,19 +68,19 @@ export class DialogFormAsignarPedidoComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<DialogFormAsignarPedidoComponent>,
+    private dialogRef: MatDialogRef<DialogFormAsignarPedidoComponent>
   ) {
     this.asignarForm = this.fb.group({
       id: 0,
       prioridad: [0, Validators.required],
       empresa: ['', Validators.required],
       conductor: ['', Validators.required],
-      vehiculo: ['', Validators.required],      
-      comentarios: ['']
+      vehiculo: ['', Validators.required],
+      comentarios: [''],
     });
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.displayNroPedido = this.data.objPedido.numero;
     this.asignarForm.patchValue({
       id: this.data.objPedido.id,
@@ -72,7 +88,7 @@ export class DialogFormAsignarPedidoComponent implements OnInit, OnDestroy {
       empresa: this.data.objPedido.empresaTransporteId,
       conductor: this.data.objPedido.conductorId,
       vehiculo: this.data.objPedido.vehiculoId,
-      comentarios: this.data.objPedido.comentarios
+      comentarios: this.data.objPedido.comentarios,
     });
   }
 
@@ -87,13 +103,19 @@ export class DialogFormAsignarPedidoComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const asignacionData = this.asignarForm.value;    
+    const asignacionData = this.asignarForm.value;
     this.loadingSave = true;
-    
+
     // Obtener el texto seleccionado del select de empresa
-    const empresaObj = this.data.objEmpresas.find(e => e.id === asignacionData.empresa);
-    const conductorObj = this.data.objConductores.find(c => c.id === asignacionData.conductor);
-    const vehiculoObj = this.data.objVehiculos.find(v => v.id === asignacionData.vehiculo);
+    const empresaObj = this.data.objEmpresas.find(
+      (e) => e.id === asignacionData.empresa
+    );
+    const conductorObj = this.data.objConductores.find(
+      (c) => c.id === asignacionData.conductor
+    );
+    const vehiculoObj = this.data.objVehiculos.find(
+      (v) => v.id === asignacionData.vehiculo
+    );
 
     let req: IPedidoAsignarRequest = {
       transConductor: conductorObj ? conductorObj.nombre : '',
@@ -104,24 +126,24 @@ export class DialogFormAsignarPedidoComponent implements OnInit, OnDestroy {
       conductorId: asignacionData.conductor,
       vehiculoId: asignacionData.vehiculo,
       empresaTransporteId: asignacionData.empresa,
-      comentarios: asignacionData.comentarios
-    }
+      comentarios: asignacionData.comentarios,
+    };
 
-    this.regAsignacionSuscripcion = this.pedidosService.asignarPedido(asignacionData.id, req).subscribe({
-      next: (resp) => {
-        this.loadingSave = false;
-        this.dialogRef.close(true);
-      },
-      error: (err: any) => {
-        console.log(err);
-        this.loadingSave = false;
-      }
-    });
+    this.regAsignacionSuscripcion = this.pedidosService
+      .asignarPedido(asignacionData.id, req)
+      .subscribe({
+        next: (resp) => {
+          this.loadingSave = false;
+          this.dialogRef.close(true);
+        },
+        error: (err: any) => {
+          console.log(err);
+          this.loadingSave = false;
+        },
+      });
   }
-
 
   onCancel(): void {
     this.dialogRef.close(false);
   }
-
 }

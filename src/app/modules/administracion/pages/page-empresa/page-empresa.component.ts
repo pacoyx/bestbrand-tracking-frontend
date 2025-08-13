@@ -12,6 +12,7 @@ import { catchError, debounceTime, distinctUntilChanged, map, of, Subscription, 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { IGetEmpresasTransporteResponse } from '../../../pedidos/interfaces/IEmpresaTransporte';
 import { DialogFormEmpresaComponent } from './components/dialog-form-empresa/dialog-form-empresa.component';
+import { PedidosmntService } from '../../../pedidos/services/pedidosmnt.service';
 
 @Component({
   selector: 'app-page-empresa',
@@ -24,7 +25,7 @@ import { DialogFormEmpresaComponent } from './components/dialog-form-empresa/dia
   styleUrl: './page-empresa.component.css'
 })
 export class PageEmpresaComponent {
-  adminMofService = inject(AdminModService);
+  adminMofService = inject(PedidosmntService);
   dialog = inject(MatDialog);
   displayedColumns: string[] = [
     'ruc',
