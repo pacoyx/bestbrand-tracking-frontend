@@ -36,6 +36,24 @@ export interface IPedidoTrack {
   comentarios?: string;
 }
 
+export interface IGetPedidosAsignarResponse {
+  id: number;
+  serie: string;
+  numero: string;
+  fechaPedido: string;
+  clienteId: string;
+  cliente: string;
+  direccionEntrega: string;  
+  transEmpresa: string;
+  transConductor: string;
+  transVehiculo: string;
+  estadoPedido: string;    
+  prioridad: number;
+  empresaTransporteId: number;
+  conductorId: number;
+  vehiculoId: number;  
+}
+
 export interface IPedidoAsignarRequest {
   transEmpresa: string;
   transConductor: string;

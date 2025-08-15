@@ -16,7 +16,11 @@
   </div>
 
   <mat-stepper [linear]="isLinear" #stepper>
-    <mat-step label="Empresa de Transporte">
+    <mat-step
+      label="Empresa de Transporte"
+      [stepControl]="asignarForm"
+      state="driver"
+    >
       <div class="container-Step1">
         <div class="section-controls-main">
           <div style="width: 100%; display: flex; justify-content: flex-end">
@@ -71,7 +75,7 @@
         </div>
       </div>
     </mat-step>
-    <mat-step label="Seleccione Pedidos">
+    <mat-step label="Seleccione Pedidos" state="orders">
       <div class="container-Step2">
         <div class="section-controls-main">
           <div class="section-controls">
@@ -250,7 +254,7 @@
         </div>
       </div>
     </mat-step>
-    <mat-step label="Prioridad de Pedidos">
+    <mat-step label="Prioridad de Pedidos" state="priority">
       <div class="container-Step1">
         <div class="section-controls-main">
           <div style="width: 100%; display: flex; justify-content: flex-end">
@@ -371,25 +375,34 @@
                   (click)="RegistrarAsignarPedido()"
                   [disabled]="saving"
                 >
+                  <mat-icon>garage_check</mat-icon>
                   @if(saving){
                   <app-loading [diameter]="20"></app-loading>
-                  Grabando... }@else {
-                  <mat-icon>garage_check</mat-icon>
-                  Registrar Asignación }
+                  Grabando... }@else { Registrar Asignación }
                 </button>
 
-                <pre>
+                <!-- <pre>
                     {{ itemsPedidos | json }}
                 </pre>
 
                 <pre>
                     {{ selection | json }}
-                </pre>
+                </pre> -->
               </div>
             </div>
           </div>
         </div>
       </div>
     </mat-step>
+
+    <ng-template matStepperIcon="driver">
+      <mat-icon>person_check</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="orders">
+      <mat-icon>shopping_cart</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="priority">
+      <mat-icon>sort</mat-icon>
+    </ng-template>
   </mat-stepper>
 </div>

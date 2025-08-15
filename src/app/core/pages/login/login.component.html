@@ -1,22 +1,27 @@
 <div class="login-container">
-    <div class="login-image">
-        <img src="camion.png" alt="Login Image" />
-        <div class="textMarca"> Despacho </div>
-        <div class="textMarca"> Mercaderia </div>
-        <div class="textMarca"> BestBrand </div>
-    </div>
-    <div class="login-form">
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <h2>Iniciar Sesión</h2>
-            <mat-form-field appearance="fill" class="full-width">
-                <mat-label>Usuario</mat-label>
-                <input matInput type="text" required formControlName="username" />
-            </mat-form-field>
-            <mat-form-field appearance="fill" class="full-width">
-                <mat-label>Contraseña</mat-label>
-                <input matInput type="password" formControlName="password" required />
-            </mat-form-field>
-            <button mat-raised-button color="primary" class="full-width">Ingresar</button>
-        </form>
-    </div>
+  <div class="login-image">
+    <img src="camion.png" alt="Login Image" />
+    <div class="textMarca">Despacho</div>
+    <div class="textMarca">Mercaderia</div>
+    <div class="textMarca">BestBrand</div>
+  </div>
+  <div class="login-form">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <h2>Iniciar Sesión</h2>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Usuario</mat-label>
+        <input matInput type="text" required formControlName="username" />
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password" required />
+      </mat-form-field>
+      <button mat-raised-button color="primary" class="full-width" [disabled]="loginForm.invalid || loading()">
+        <div style="display: flex; gap: 10px; align-items: center;">
+            @if(loading()){
+                <app-loading [diameter]="30"></app-loading> } Ingresar
+            </div>
+      </button>
+    </form>
+  </div>
 </div>

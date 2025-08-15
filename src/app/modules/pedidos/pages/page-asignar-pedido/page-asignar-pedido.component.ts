@@ -18,6 +18,7 @@ import { LoadingComponent } from '../../../../core/components/loading/loading.co
 import { PedidosmntService } from '../../services/pedidosmnt.service';
 import {
   IDataTransporteAsignarRequest,
+  IGetPedidosAsignarResponse,
   IGetPedidosResponse,
   IPedidoAsigandoV2Rquest,
   IPedidoAsignarRequest,
@@ -45,6 +46,10 @@ import {
   CdkDrag,
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { ViewChild } from '@angular/core';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-page-asignar-pedido',
@@ -62,24 +67,31 @@ import {
     MatSortModule,
     LoadingComponent,
     MatCheckboxModule,
-    MatStepperModule,
-    JsonPipe,
+    MatStepperModule,    
     MatSelectModule,
     CdkDropList,
     CdkDrag,
+    MatSnackBarModule
   ],
   providers: [
     provideNativeDateAdapter(),
     { provide: DateAdapter, useClass: CustomDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: {displayDefaultIndicatorType: false},
+    },
   ],
   templateUrl: './page-asignar-pedido.component.html',
   styleUrl: './page-asignar-pedido.component.css',
 })
 export class PageAsignarPedidoComponent implements OnInit, OnDestroy {
   pedidoService = inject(PedidosmntService);
+  private _snackBar = inject(MatSnackBar);
+  @ViewChild('stepper') stepper!: MatStepper;
+
   fechaHoy: Date = new Date();
-  dataSource = new MatTableDataSource<IGetPedidosResponse>([]);
+  dataSource = new MatTableDataSource<IGetPedidosAsignarResponse>([]);
   loading = false;
   saving = false;
   empresas: IGetEmpresasTransporteToHelpResponse[] = [];
@@ -94,10 +106,10 @@ export class PageAsignarPedidoComponent implements OnInit, OnDestroy {
     'direntrega',
   ];
 
-  selection = new SelectionModel<IGetPedidosResponse>(true, []);
-  isLinear = false;
+  selection = new SelectionModel<IGetPedidosAsignarResponse>(true, []);
+  isLinear = true;
   asignarForm: FormGroup;
-  itemsPedidos: IGetPedidosResponse[] = [];
+  itemsPedidos: IGetPedidosAsignarResponse[] = [];
 
   constructor(private fb: FormBuilder) {
     this.asignarForm = this.fb.group({
@@ -192,7 +204,7 @@ export class PageAsignarPedidoComponent implements OnInit, OnDestroy {
 
     this.loading = true;
     this.pedidosSubscription = this.pedidoService
-      .listarPedidos(fecha)
+      .listarPedidosAsignar(fecha)
       .subscribe({
         next: (response) => {
           if (response.success) {
@@ -266,6 +278,16 @@ export class PageAsignarPedidoComponent implements OnInit, OnDestroy {
         if (response.success) {
           console.log('Pedidos asignados exitosamente:', response.data);
           this.saving = false;
+          this._snackBar.open('Pedidos asignados exitosamente', 'OK', {
+            duration: 3000,
+          });          
+          
+          this.stepper.reset();
+          this.selection.clear();
+          this.asignarForm.reset();
+          this.itemsPedidos = [];
+
+
         } else {
           console.error('Error al asignar pedidos:', response.message);
           this.saving = false;

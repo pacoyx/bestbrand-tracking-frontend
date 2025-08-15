@@ -30,6 +30,7 @@ export const environment = {
     EPAsignarPedido: '/api/v1/pedidos/asignar',
     EPAsignarPedidoMasivo: '/api/v1/pedidos/asignarPedidoMasivo',
     EPListarPedidos: '/api/v1/pedidos',
+    EPListarPedidosAsignar: '/api/v1/pedidos/asignar',
     EPActualizarEstadoPedido: '/api/v1/pedidos/actualizar',
     EPListarPedidosPorConductor: '/api/v1/pedidos/byConductor',
     EPObtenerFacturaPdfPorPedido: '/api/v1/pedidos/pdf/facturaPdfByPedido',

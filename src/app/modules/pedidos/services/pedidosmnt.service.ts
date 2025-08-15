@@ -20,6 +20,7 @@ import {
   IUpdateVehiculoResponse,
 } from '../interfaces/IVehiculo';
 import {
+  IGetPedidosAsignarResponse,
   IGetPedidosResponse,
   IPedidoAsigandoV2Rquest,
   IPedidoAsignarRequest,
@@ -70,6 +71,17 @@ export class PedidosmntService {
     const params = { fecha };
     return this.http.get<IResponseGeneric<IGetPedidosResponse[]>>(
       `${this.apiUrl}${environment.EPListarPedidos}`,
+      { headers, params }
+    );
+  }
+
+  listarPedidosAsignar(
+    fecha: string
+  ): Observable<IResponseGeneric<IGetPedidosAsignarResponse[]>> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const params = { fecha };
+    return this.http.get<IResponseGeneric<IGetPedidosAsignarResponse[]>>(
+      `${this.apiUrl}${environment.EPListarPedidosAsignar}`,
       { headers, params }
     );
   }
