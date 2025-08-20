@@ -86,3 +86,21 @@ export interface IPedidoAsigandoV2Rquest{
   DataTransporte: IDataTransporteAsignarRequest,
   DataPedidosAsignados: IPedidosAsignadosRequest[],
 }
+
+
+export interface IGetCoorByUserResponse {
+  id: number;
+  fecha: string;
+  latitud: number;
+  longitud: number;
+  dispositivoId: number;
+}
+
+export interface IGetUbicacionConductoresResponse {
+  nombreConductor: string;
+  usuarioId: number;
+  estadoRegistro: string;
+  fechaRegistro: string;
+  placaVehiculo: string;
+  numeroPedido: string;
+}

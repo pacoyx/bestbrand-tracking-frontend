@@ -32,6 +32,7 @@ import { LoadingComponent } from '../../../../core/components/loading/loading.co
 import { DialogVisorPdfComponent } from '../../../../core/components/dialog-visor-pdf/dialog-visor-pdf.component';
 import { DialogVisorImgComponent } from './components/dialog-visor-img/dialog-visor-img.component';
 import { EstadoRegistroDetalleComponent } from '../../../conductor/pages/page-conductor-track/components/estado-registro-detalle/estado-registro-detalle.component';
+import { LeafletMapComponent } from '../../../../core/components/leaflet-map/leaflet-map.component';
 
 @Component({
   selector: 'app-page-track-pedidos',
@@ -48,7 +49,7 @@ import { EstadoRegistroDetalleComponent } from '../../../conductor/pages/page-co
     MatSortModule,
     MatChipsModule,
     LoadingComponent,
-    EstadoRegistroDetalleComponent,
+    EstadoRegistroDetalleComponent    
   ],
   providers: [
     provideNativeDateAdapter(),
@@ -64,7 +65,7 @@ export class PageTrackPedidosComponent implements OnInit, OnDestroy {
   pedidosSubscription!: Subscription;
   dialog = inject(MatDialog);
   displayedColumns: string[] = [
-    'actions',
+    // 'actions',
     'factura',
     'prioridad',
     'nropedido',
@@ -88,7 +89,22 @@ export class PageTrackPedidosComponent implements OnInit, OnDestroy {
   expandedElement: IGetPedidosResponse | null = null;
 
   ngOnInit(): void {
-    this.cargarCombos();
+    // this.cargarCombos();
+  }
+
+   applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  limpiarFiltro(){    
+    this.dataSource.filter = '';
+    // Clear the input element
+    const inputElement = document.querySelector('#filterInput') as HTMLInputElement;
+    if (inputElement) {
+      inputElement.value = '';
+      inputElement.focus();
+    }
   }
 
   /** Checks whether an element is expanded. */

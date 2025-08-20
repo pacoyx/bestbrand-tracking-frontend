@@ -1,0 +1,61 @@
+.container-trackpedidos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 10px;
+  /* background-color: pink; */
+}
+/* Estado inicial - borde simple */
+.example-card {
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid #e0e0e0; /* Borde simple gris claro */
+  background-color: #ffffff;
+}
+
+/* Hover - efecto sutil */
+.example-card:hover {
+  border-color: #bdbdbd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Estado seleccionado - resaltado */
+.selected-card {
+  background-color: #e3f2fd !important; /* Fondo azul claro */
+  border: 2px solid #2196f3 !important; /* Borde azul más grueso */
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2) !important;
+  transform: translateY(-2px);
+}
+
+.selected-card mat-card-title {
+  color: #1976d2; /* Título en azul */
+  font-weight: 600;
+}
+
+.selected-card mat-card-subtitle {
+  color: #1565c0; /* Subtítulo en azul más oscuro */
+}
+
+/* Transición suave para el texto */
+.example-card mat-card-title,
+.example-card mat-card-subtitle {
+  transition: color 0.3s ease;
+}
+
+/* Estilo para el icono de check */
+.example-card mat-icon {
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+/* Mejorar la apariencia del contenido */
+.example-card mat-card-content {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.selected-card mat-card-content {
+  color: #333;
+}

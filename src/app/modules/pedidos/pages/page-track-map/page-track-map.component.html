@@ -1,0 +1,71 @@
+<div class="container-trackpedidos">
+  <div
+    style="
+      display: flex;
+      justify-content: space-between;
+      border: 1px solid gainsboro;
+      border-radius: 5px;
+      padding: 5px;
+      margin-bottom: 5px;
+    "
+  >
+    <div style="display: flex; gap: 5px; align-items: center">
+      <mat-icon>location_on</mat-icon>
+      <label><strong>Tracking Map</strong></label>
+    </div>
+  </div>
+
+  <div style="display: flex">
+    <div style="width: 20%; padding: 10px; padding-top: 0px; padding-left: 0px">
+      @for(conductor of ListConductores; track conductor){
+      <mat-card
+        class="example-card"
+        appearance="outlined"
+        [class.selected-card]="isConductorSelected(conductor)"
+        (click)="handlerListConductor(conductor)"
+      >
+        <mat-card-header>
+          <mat-card-title-group>
+            <mat-card-title>
+              <div style="display: flex; align-items: center;">
+                @if(isConductorSelected(conductor)){
+                <mat-icon style="color: #2196f3; font-size: 20px;">
+                  check_circle
+                </mat-icon>
+                }
+                <span>{{ conductor.nombreConductor }}</span>
+              </div>
+            </mat-card-title>
+            <mat-card-subtitle>
+              Pedido N°: {{ conductor.numeroPedido }}
+            </mat-card-subtitle>
+          </mat-card-title-group>
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div style="display: flex; flex-direction: column; gap: 5px">
+            <div><strong>Estado:</strong> {{ conductor.estadoRegistro }}</div>
+            <div><strong>Hace:</strong> {{ getTiempoTranscurrido(conductor.fechaRegistro) }}</div>
+            <div><strong>Placa:</strong> {{ conductor.placaVehiculo }}</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      }
+    </div>
+
+    <div style="width: 80%">
+      @if(loading){
+      <div style="display: flex; justify-content: center; align-items: center; height: 400px;">
+        <app-loading [diameter]="40"></app-loading>
+        <span style="margin-left: 16px;">Cargando mapa...</span>
+      </div>
+      }@else{
+      <app-leaflet-map
+        [latitude]="xLatitud"
+        [longitude]="yLongitud"
+        [propiedades]="xpropiedades"
+      ></app-leaflet-map>
+      }
+    </div>
+  </div>
+</div>

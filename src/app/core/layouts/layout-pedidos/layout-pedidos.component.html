@@ -36,7 +36,7 @@
             [routerLinkActiveOptions]="{ exact: true }"
           >
             <mat-icon>view_timeline</mat-icon>
-            Asignar Pedidos
+            Asignar
           </a>
           <a
             mat-list-item
@@ -46,6 +46,15 @@
           >
             <mat-icon>view_timeline</mat-icon>
             Tracking
+          </a>
+          <a
+            mat-list-item
+            [routerLink]="['/pedidos/tracking-map']"
+            routerLinkActive="router-link-active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <mat-icon>map</mat-icon>
+            Ubicaciones
           </a>
 
           <a
