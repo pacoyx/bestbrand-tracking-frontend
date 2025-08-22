@@ -1,4 +1,10 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,  
+  inject,
+  Input,
+  Output,
+} from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import {
   IGetPedidosResponse,
@@ -14,6 +20,10 @@ import { DialogConfirmarEstadoComponent } from '../dialog-confirmar-estado/dialo
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { DialogWebcamComponent } from '../dialog-webcam/dialog-webcam.component';
 import { ConductorTrackService } from '../../../../services/conductor-track.service';
+import { IRegUbicacionRequest } from '../../../../../../core/interfaces/ICommons';
+import { Geolocation } from '@capacitor/geolocation';
+import { MovilUbicationService } from '../../../../../../core/services/movil-ubication.service';
+import { StorageService } from '../../../../../../core/services/storage.service';
 
 @Component({
   selector: 'app-card-tabla-pedidos',
@@ -43,6 +53,8 @@ export class CardTablaPedidosComponent {
   estadosPosibles = ['EN_TRANSITO', 'ENTREGADO', 'CANCELADO'];
   showDetails = false;
   showBody = false;
+  geoServices = inject(MovilUbicationService);
+  storage = inject(StorageService);
 
   takePhoto() {
     console.log('Tomando foto...');
@@ -57,7 +69,7 @@ export class CardTablaPedidosComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result.ok) {        
+      if (result.ok) {
         // result.imageAsDataUrl - para mostrar la imagen
         // result.imageAsBase64 - para enviar al servidor
         // Enviar imagen al servidor
@@ -65,12 +77,13 @@ export class CardTablaPedidosComponent {
       }
     });
   }
-  enviarImagenAlServidor(imageAsBase64: any) {    
+  enviarImagenAlServidor(imageAsBase64: any) {
     let request: IPedidoImagenBase64DtoRequest = {
       imagenBase64: imageAsBase64,
+      EstadoPedido: this.pedido.estadoPedido,
     };
     this.conductorTrackService.uploadImagen(this.pedido.id, request).subscribe({
-      next: (response) => {        
+      next: (response) => {
         this._snackBar.open('Imagen enviada exitosamente', 'Cerrar', {
           duration: 3000,
         });
@@ -88,8 +101,36 @@ export class CardTablaPedidosComponent {
     console.log('Descargando PDF de la factura...');
   }
 
+  cancelarPedido() {
+    if (this.pedido.estadoPedido === 'CANCELADO') {
+      this._snackBar.open('El pedido ya está cancelado', 'Cerrar', {
+        duration: 3000,
+      });
+      return;
+    }
+
+    console.log('Cancelando pedido...');
+
+    const dialogRef = this.dialog.open(DialogConfirmarEstadoComponent, {
+      data: { estado: 'CANCELADO' },
+    });
+
+    dialogRef
+      .afterClosed()
+      .subscribe((result: { comentarios: string; ok: boolean }) => {
+        if (result.ok) {
+          this.pedido.estadoPedido = 'CANCELADO';
+          this.changeStateOrder.emit({
+            estado: this.pedido.estadoPedido,
+            comentarios: result.comentarios,
+          });
+          this.obtenerYEnviarUbicacion();
+        }
+      });
+  }
+
   changeState(event: Event) {
-    event.stopPropagation();    
+    event.stopPropagation();
 
     if (this.pedido.estadoPedido === 'CANCELADO') {
       this._snackBar.open('No se puede cambiar el estado', 'Cerrar', {
@@ -113,6 +154,7 @@ export class CardTablaPedidosComponent {
             estado: this.pedido.estadoPedido,
             comentarios: result.comentarios,
           });
+          this.obtenerYEnviarUbicacion();
         }
       });
   }
@@ -120,6 +162,7 @@ export class CardTablaPedidosComponent {
   toggleDetails() {
     this.showDetails = !this.showDetails;
   }
+
   toggleBody() {
     this.showBody = !this.showBody;
   }
@@ -127,12 +170,41 @@ export class CardTablaPedidosComponent {
   getNuevoEstado(estadoActual: string): string {
     if (estadoActual === 'EN_TRANSITO') {
       return 'ENTREGADO';
-    } else if (estadoActual === 'ENTREGADO') {
-      return 'CANCELADO';
     } else if (estadoActual === 'ASIGNADO') {
       return 'EN_TRANSITO';
     } else {
       return 'EN_TRANSITO';
+    }
+  }
+
+  async obtenerYEnviarUbicacion() {        
+    try {
+      const position = await Geolocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 5000,
+      });
+
+      const { latitude, longitude } = position.coords;
+      const timestamp = new Date().toLocaleTimeString();      
+      const dispositivoId = await this.storage.get('dispositivoId');
+      const ubicacion: IRegUbicacionRequest = {
+        dispositivoId: dispositivoId ? Number(dispositivoId) : 0,
+        latitud: latitude,
+        longitud: longitude,
+        fechaHora: new Date(),
+      };
+
+      this.geoServices.guardarUbicacion(ubicacion).subscribe({
+        next: () => {
+          console.log(`[${timestamp}] ✅ Ubicación guardada`);
+        },
+        error: (error: any) => {
+          console.error(`[${timestamp}] ❌ Error guardando:`, error);
+        },
+      });
+    } catch (error) {
+      console.error('Error obteniendo ubicación:', error);
     }
   }
 }
