@@ -19,24 +19,24 @@
         "
       >
         <div>
-          <!-- <a
+      
+          <a
             mat-list-item
-            [routerLink]="['/conductor/driverTrack']"
+            [routerLink]="['/pedidos/ver-pedidos']"
             routerLinkActive="router-link-active"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            <mat-icon>local_shipping</mat-icon>
-            DriverTrack
-          </a> -->
-
+            <mat-icon>list_alt</mat-icon>
+            Pedidos
+          </a>
           <a
             mat-list-item
             [routerLink]="['/pedidos/asignar']"
             routerLinkActive="router-link-active"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            <mat-icon>view_timeline</mat-icon>
-            Asignar Pedidos
+            <mat-icon>co_present</mat-icon>
+            Asignar
           </a>
           <a
             mat-list-item
@@ -44,8 +44,17 @@
             routerLinkActive="router-link-active"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            <mat-icon>view_timeline</mat-icon>
+            <mat-icon>table_chart</mat-icon>
             Tracking
+          </a>
+          <a
+            mat-list-item
+            [routerLink]="['/pedidos/tracking-map']"
+            routerLinkActive="router-link-active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <mat-icon>location_on</mat-icon>
+            Ubicaciones
           </a>
 
           <a

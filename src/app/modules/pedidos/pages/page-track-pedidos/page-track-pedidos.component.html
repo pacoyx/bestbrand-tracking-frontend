@@ -10,7 +10,7 @@
     "
   >
     <div style="display: flex; gap: 5px; align-items: center">
-      <mat-icon>view_timeline</mat-icon>
+      <mat-icon>table_chart</mat-icon>
       <label><strong>Tracking de Pedidos</strong></label>
     </div>
   </div>
@@ -30,12 +30,31 @@
       <mat-icon>search</mat-icon>
       Buscar
     </button>
+
     @if (loading) {
     <div style="display: flex; align-items: center; gap: 5px">
       <app-loading [diameter]="30"></app-loading>
-      Cargando pedidos...
+      Cargando...
     </div>
     }
+
+    <div style="width: 100%; display: flex; justify-content: flex-end; align-items: baseline; gap: 5px;">
+      <mat-form-field>
+        <mat-label>Filter</mat-label>
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Ex. ium"
+          #filterInput
+          id="filterInput"
+        />
+      </mat-form-field>
+      <button mat-mini-fab (click)="limpiarFiltro()" [disabled]="!dataSource.filter">
+        <mat-icon>filter_alt_off</mat-icon>
+      </button>
+    </div>
+
+    
   </div>
 
   <table
@@ -71,7 +90,7 @@
           [class.example-element-detail-wrapper-expanded]="isExpanded(element)"
         >
           <div class="example-element-detail">
-            <div style="width: 100%; padding: 10px;">
+            <div style="width: 100%; padding: 10px">
               <app-estado-registro-detalle
                 [registros]="element.registros"
                 [orientation]="'horizontal'"

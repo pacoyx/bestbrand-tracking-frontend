@@ -43,4 +43,5 @@ export interface IActualizarEstadoPedidoRequest {
 
 export interface IPedidoImagenBase64DtoRequest {
   imagenBase64: string;
+  EstadoPedido: string;
 }

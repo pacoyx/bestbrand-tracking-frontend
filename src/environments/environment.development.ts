@@ -33,10 +33,18 @@ export const environment = {
     EPObtenerFacturaPdfPorPedido: '/api/v1/pedidos/pdf/facturaPdfByPedido',
     EPObtenerImagenPorPedido: '/api/v1/pedidos/imagenesEntregado',
     EPUploadImagenPorPedido: '/api/v1/pedidos/upload/foto',
+    EPListaUbicacionConductores: '/api/v1/ubicaciones/conductores/ultimo-estado',
+    EPListarFacturaDetallePorPedido:'/api/v1/pedidos/facturaDetalle',
 
     EPGetEmpresasTransporte: '/api/v1/empresas-transporte',
     EPGetEmpresasTransporteToHelp: '/api/v1/empresas-transporte',
     EPGetEmpresasTransportePaginator: '/api/v1/empresas-transporte',
     EPCreateEmpresaTransporte: '/api/v1/empresas-transporte',
     EPUpdateEmpresaTransporte: '/api/v1/empresas-transporte',
+
+    EPGetUbicacionesPorDispositivo: '/api/v1/ubicaciones/dispositivo',
+    EPGetUbicacionesPorUsuario: '/api/v1/ubicaciones/usuario',
+    EPGetUltimaUbicacionPorUsuario: '/api/v1/ubicaciones/usuario/userID/ultima',
+    EPRegistrarDispositivo: '/api/v1/ubicaciones/dispositivo',
+    EPRegistrarUbicacion: '/api/v1/ubicaciones/ubicacion'
 };

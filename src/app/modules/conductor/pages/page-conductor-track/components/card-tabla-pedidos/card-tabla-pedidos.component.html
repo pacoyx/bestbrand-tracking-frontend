@@ -55,11 +55,15 @@
   </mat-card-content>
 
   <mat-card-actions style="display: flex; justify-content: space-around">
-    @if(pedido.estadoPedido === 'ENTREGADO'){
+    @if(pedido.estadoPedido === 'ENTREGADO' || pedido.estadoPedido === 'CANCELADO') {
     <button mat-mini-fab (click)="takePhoto()">
       <mat-icon>photo_camera</mat-icon>
     </button>
     }
+
+    <button mat-mini-fab (click)="cancelarPedido()">
+      <mat-icon style="color: red">cancel</mat-icon>
+    </button>
 
     <button mat-mini-fab (click)="downloadPdfInvoice()">
       <mat-icon>receipt</mat-icon>

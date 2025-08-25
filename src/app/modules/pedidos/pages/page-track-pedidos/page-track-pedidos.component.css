@@ -113,3 +113,10 @@ tr.example-element-row:not(.example-expanded-row):active {
 .example-toggle-button-expanded {
   transform: rotate(180deg);
 }
+
+
+.form-field-filtro {
+  font-size: 14px;
+  width: 100%;
+  /* margin-left: 40px; */
+}

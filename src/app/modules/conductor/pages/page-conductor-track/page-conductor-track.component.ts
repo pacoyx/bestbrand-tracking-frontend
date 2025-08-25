@@ -28,6 +28,7 @@ import { ConductorTrackService } from '../../services/conductor-track.service';
 import { DeviceDetectionService } from '../../../../core/services/device-detection.service';
 import { CardTablaPedidosComponent } from './components/card-tabla-pedidos/card-tabla-pedidos.component';
 import { LoadingComponent } from '../../../../core/components/loading/loading.component';
+import { Geolocation, Position } from '@capacitor/geolocation';
 
 @Component({
   selector: 'app-page-conductor-track',
@@ -61,6 +62,8 @@ export class PageConductorTrackComponent implements OnInit, OnDestroy {
   conductorService = inject(ConductorTrackService);
   loginService = inject(AuthService);
   pedidosSubscription!: Subscription;
+  loc: Position | null = null;
+
   displayedColumns: string[] = [
     'actions',
     'factura',
@@ -79,6 +82,40 @@ export class PageConductorTrackComponent implements OnInit, OnDestroy {
   driverId: number = 0; // ID del conductor, se puede obtener de la sesión o contexto actual
   dataPedidos: IGetPedidosResponse[] = [];
 
+  // Método para verificar si tenemos ubicación
+  // hasLocation(): boolean {
+  //   return this.loc !== null && this.loc.coords !== undefined;
+  // }
+
+  // async getCurrentPosition11() {
+  //   const position = await Geolocation.getCurrentPosition();
+  //   const { latitude, longitude } = position.coords;
+  //   console.log(`Lat: ${latitude}, Lng: ${longitude}`);
+  //   return { latitude, longitude };
+  // }
+
+  // async getCurrentPosition() {
+  //   try {
+  //     const position = await Geolocation.getCurrentPosition();
+  //     this.loc = position;
+  //     console.log('Posición actual:', position);
+  //   } catch (error) {
+  //     console.error('Error obteniendo la posición:', error);
+  //     this.loc = null;
+  //   }
+  // }
+
+  // // También puedes crear un método para obtener coordenadas específicas
+  // getCoordinates(): { lat: number; lng: number } | null {
+  //   if (this.loc?.coords) {
+  //     return {
+  //       lat: this.loc.coords.latitude,
+  //       lng: this.loc.coords.longitude,
+  //     };
+  //   }
+  //   return null;
+  // }
+
   ngOnInit(): void {
     // Obtener el ID del conductor desde el servicio de autenticación
     const user = this.loginService.getCurrentUser();
@@ -89,20 +126,21 @@ export class PageConductorTrackComponent implements OnInit, OnDestroy {
       console.log('Es móvil:', isMobile);
       this.idMobile = isMobile;
     });
+
+   
   }
 
   cargarPedidos() {
     // Restar la diferencia horaria UTC con Perú (-5 horas)
     const fechaPeru = new Date(this.fechaHoy.getTime() - 5 * 60 * 60 * 1000);
     let fecha = fechaPeru.toISOString().split('T')[0]; // Formatear la fecha a YYYY-MM-DD
-    
 
     this.loading = true;
     this.pedidosSubscription = this.conductorService
       .listarPedidos(fecha, this.driverId)
       .subscribe({
         next: (response) => {
-          if (response.success) {    
+          if (response.success) {
             this.dataPedidos = response.data;
             this.dataSource = new MatTableDataSource(response.data);
           } else {
@@ -117,8 +155,7 @@ export class PageConductorTrackComponent implements OnInit, OnDestroy {
       });
   }
 
-  verPdfFactura(pedido: IGetPedidosResponse) {   
-
+  verPdfFactura(pedido: IGetPedidosResponse) {
     this.conductorService.obtenerFacturaPdfPorPedido(pedido.numero).subscribe({
       next: (blob) => {
         const url = window.URL.createObjectURL(blob);
@@ -137,7 +174,7 @@ export class PageConductorTrackComponent implements OnInit, OnDestroy {
   cambiarEstadoPedido(
     nuevoEstado: { estado: string; comentarios?: string },
     pedidoId: number
-  ) {    
+  ) {
     const fechaPeru = new Date(new Date().getTime() - 5 * 60 * 60 * 1000);
     let fechaEntrega = fechaPeru.toISOString().split('T')[0]; // Formatear la fecha a YYYY-MM-DD
 

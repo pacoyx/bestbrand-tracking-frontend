@@ -20,8 +20,11 @@ import {
   IUpdateVehiculoResponse,
 } from '../interfaces/IVehiculo';
 import {
+  IGetCoorByUserResponse,
+  IGetFacturaDetallePorPedidoResponse,
   IGetPedidosAsignarResponse,
   IGetPedidosResponse,
+  IGetUbicacionConductoresResponse,
   IPedidoAsigandoV2Rquest,
   IPedidoAsignarRequest,
   IPedidosAsignadosRequest,
@@ -85,6 +88,16 @@ export class PedidosmntService {
       { headers, params }
     );
   }
+
+  listarFacturaDetallePorPedido(numeroPedido: string): Observable<IResponseGeneric<IGetFacturaDetallePorPedidoResponse[]>>
+  {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.get<IResponseGeneric<IGetFacturaDetallePorPedidoResponse[]>>(
+      `${this.apiUrl}${environment.EPListarFacturaDetallePorPedido}/${numeroPedido}`,
+      { headers }
+    );
+  }
+
 
   // CONDUCTOR ============
 
@@ -269,5 +282,34 @@ export class PedidosmntService {
       data,
       { headers }
     );
+  }
+
+  getCoordenasPorUsuario(
+    userId: number
+  ): Observable<IResponseGeneric<IGetCoorByUserResponse>> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    let urlEP = environment.EPGetUltimaUbicacionPorUsuario;
+    urlEP = urlEP.replace('userID', userId.toString());
+
+    return this.http.get<IResponseGeneric<IGetCoorByUserResponse>>(
+      `${this.apiUrl}${urlEP}`,
+      { headers }
+    );
+  }
+
+  getUbicacionConductores(
+    fecha: string
+  ): Observable<IResponseGeneric<IGetUbicacionConductoresResponse[]>> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.get<IResponseGeneric<IGetUbicacionConductoresResponse[]>>(
+      `${this.apiUrl}${environment.EPListaUbicacionConductores}/${fecha}`,
+      { headers }
+    );
+  }
+
+  getDireccionNominatim(lat: number, lon: number): Observable<any> {    
+    const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
+    return this.http.get(url);
   }
 }

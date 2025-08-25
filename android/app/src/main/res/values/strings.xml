@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">bestbrand-tracking-frontend</string>
+    <string name="title_activity_main">bestbrand-tracking-frontend</string>
+    <string name="package_name">com.apptraskingbb.com</string>
+    <string name="custom_url_scheme">com.apptraskingbb.com</string>
+</resources>
