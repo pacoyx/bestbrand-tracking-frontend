@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.apptraskingbb.com.app-mergeDebugResources-31:/values-v31/values-v31.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\USUARIO\\.gradle\\caches\\8.13\\transforms\\3182a7f1ff342bdd826c9dbae9e16b6b\\transformed\\core-splashscreen-1.0.1\\res\\values-v31\\values-v31.xml",
+                    "from": {
+                        "startLines": "2,9",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,473",
+                        "endLines": "8,13",
+                        "endColumns": "12,12",
+                        "endOffsets": "468,697"
+                    }
+                }
+            ]
+        }
+    ]
+}
