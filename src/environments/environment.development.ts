@@ -34,6 +34,7 @@ export const environment = {
     EPObtenerImagenPorPedido: '/api/v1/pedidos/imagenesEntregado',
     EPUploadImagenPorPedido: '/api/v1/pedidos/upload/foto',
     EPListaUbicacionConductores: '/api/v1/ubicaciones/conductores/ultimo-estado',
+    EPListarFacturaDetallePorPedido:'/api/v1/pedidos/facturaDetalle',
 
     EPGetEmpresasTransporte: '/api/v1/empresas-transporte',
     EPGetEmpresasTransporteToHelp: '/api/v1/empresas-transporte',

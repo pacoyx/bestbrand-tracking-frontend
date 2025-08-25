@@ -1,16 +1,15 @@
 export interface IPedidoTrack {
-      nropedido: string;
-      cliente: string;
-      direntrega: string;
-      ubigeo: string;
-      docguia: string;
-      transportista: string;
-      estadopedido: string;
-      actions: string;
-    }
+  nropedido: string;
+  cliente: string;
+  direntrega: string;
+  ubigeo: string;
+  docguia: string;
+  transportista: string;
+  estadopedido: string;
+  actions: string;
+}
 
-
- export interface IGetPedidosResponse {
+export interface IGetPedidosResponse {
   id: number;
   serie: string;
   numero: string;
@@ -43,15 +42,15 @@ export interface IGetPedidosAsignarResponse {
   fechaPedido: string;
   clienteId: string;
   cliente: string;
-  direccionEntrega: string;  
+  direccionEntrega: string;
   transEmpresa: string;
   transConductor: string;
   transVehiculo: string;
-  estadoPedido: string;    
+  estadoPedido: string;
   prioridad: number;
   empresaTransporteId: number;
   conductorId: number;
-  vehiculoId: number;  
+  vehiculoId: number;
 }
 
 export interface IPedidoAsignarRequest {
@@ -69,24 +68,22 @@ export interface IPedidoAsignarRequest {
 export interface IDataTransporteAsignarRequest {
   transEmpresa: string;
   transConductor: string;
-  transVehiculo: string;  
+  transVehiculo: string;
   empresaTransporteId: number;
   conductorId: number;
   vehiculoId: number;
   comentarios?: string;
 }
 
-
-export interface IPedidosAsignadosRequest{
-  pedidoId:number;
-  prioridad:number;
+export interface IPedidosAsignadosRequest {
+  pedidoId: number;
+  prioridad: number;
 }
 
-export interface IPedidoAsigandoV2Rquest{
-  DataTransporte: IDataTransporteAsignarRequest,
-  DataPedidosAsignados: IPedidosAsignadosRequest[],
+export interface IPedidoAsigandoV2Rquest {
+  DataTransporte: IDataTransporteAsignarRequest;
+  DataPedidosAsignados: IPedidosAsignadosRequest[];
 }
-
 
 export interface IGetCoorByUserResponse {
   id: number;
@@ -103,4 +100,11 @@ export interface IGetUbicacionConductoresResponse {
   fechaRegistro: string;
   placaVehiculo: string;
   numeroPedido: string;
+}
+
+export interface IGetFacturaDetallePorPedidoResponse {
+  codigo: string;
+  cantidad: number;
+  descripcion: string;
+  unidad: string;
 }

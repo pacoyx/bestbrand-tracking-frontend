@@ -21,6 +21,7 @@ import {
 } from '../interfaces/IVehiculo';
 import {
   IGetCoorByUserResponse,
+  IGetFacturaDetallePorPedidoResponse,
   IGetPedidosAsignarResponse,
   IGetPedidosResponse,
   IGetUbicacionConductoresResponse,
@@ -87,6 +88,16 @@ export class PedidosmntService {
       { headers, params }
     );
   }
+
+  listarFacturaDetallePorPedido(numeroPedido: string): Observable<IResponseGeneric<IGetFacturaDetallePorPedidoResponse[]>>
+  {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.get<IResponseGeneric<IGetFacturaDetallePorPedidoResponse[]>>(
+      `${this.apiUrl}${environment.EPListarFacturaDetallePorPedido}/${numeroPedido}`,
+      { headers }
+    );
+  }
+
 
   // CONDUCTOR ============
 

@@ -1,0 +1,89 @@
+.invoice-detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.invoice-detail-table thead {
+    background-color: #f8f9fa;
+}
+
+.invoice-detail-table th {
+    padding: 16px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.invoice-detail-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #e9ecef;
+    color: #212529;
+    font-size: 14px;
+}
+
+.invoice-detail-table tbody tr:hover {
+    background-color: #f8f9fa;
+    transition: background-color 0.2s ease;
+}
+
+.invoice-detail-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Column specific styles */
+.invoice-detail-table .col-item {
+    font-weight: 500;
+    min-width: 200px;
+}
+
+.invoice-detail-table .col-quantity,
+.invoice-detail-table .col-price,
+.invoice-detail-table .col-total {
+    text-align: right;
+    font-weight: 500;
+}
+
+.invoice-detail-table .col-quantity {
+    width: 80px;
+}
+
+.invoice-detail-table .col-price,
+.invoice-detail-table .col-total {
+    width: 120px;
+}
+
+/* Total row styling */
+.invoice-detail-table .total-row {
+    background-color: #e3f2fd;
+    font-weight: 600;
+}
+
+.invoice-detail-table .total-row td {
+    border-top: 2px solid #2196f3;
+    color: #1565c0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .invoice-detail-table {
+        font-size: 12px;
+    }
+    
+    .invoice-detail-table th,
+    .invoice-detail-table td {
+        padding: 10px 8px;
+    }
+    
+    .invoice-detail-table .col-item {
+        min-width: 150px;
+    }
+}

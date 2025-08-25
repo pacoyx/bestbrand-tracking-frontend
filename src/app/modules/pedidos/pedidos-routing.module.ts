@@ -6,6 +6,7 @@ import { PageTrackPedidosComponent } from './pages/page-track-pedidos/page-track
 import { PageReportesComponent } from './pages/page-reportes/page-reportes.component';
 import { PageAsignarPedidoComponent } from './pages/page-asignar-pedido/page-asignar-pedido.component';
 import { PageTrackMapComponent } from './pages/page-track-map/page-track-map.component';
+import { PageViewPedidosComponent } from './pages/page-view-pedidos/page-view-pedidos.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'tracking', pathMatch: 'full' },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'vehiculo', component: PageVehiculosComponent },
   { path: 'reportes', component: PageReportesComponent },
   { path: 'tracking-map', component: PageTrackMapComponent },
+  { path: 'ver-pedidos', component: PageViewPedidosComponent },
 ];
 
 @NgModule({
