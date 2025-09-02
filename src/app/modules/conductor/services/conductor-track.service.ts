@@ -7,6 +7,7 @@ import {
   IActualizarEstadoPedidoRequest,
   IGetPedidosResponse,
   IPedidoImagenBase64DtoRequest,
+  ITrackEstadoPedido,
 } from '../interfaces/IOperaciones';
 
 @Injectable({
@@ -28,6 +29,19 @@ export class ConductorTrackService {
       { headers }
     );
   }
+
+  trackEstadoPedido(
+    idPedido: number,
+    data: ITrackEstadoPedido
+  ): Observable<IResponseGeneric<boolean>> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.put<IResponseGeneric<boolean>>(
+      `${this.apiUrl}${environment.EPTrackEstadoPedido}/${idPedido}`,
+      data,
+      { headers }
+    );
+  }
+     
 
   listarPedidos(
     fecha: string,

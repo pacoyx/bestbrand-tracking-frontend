@@ -4,13 +4,14 @@ import { PedidosmntService } from '../../services/pedidosmnt.service';
 import { IGetUbicacionConductoresResponse } from '../../interfaces/IPedidoTrack';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { IInfoPropMarker } from '../../../../core/interfaces/ICommons';
+import { IInfoPropMarker, PedidoInfo, TrackEstado, TrackingPedxConductorResponse } from '../../../../core/interfaces/ICommons';
 import { Subscription } from 'rxjs';
 import { LoadingComponent } from '../../../../core/components/loading/loading.component';
 
 
 import { switchMap, tap, catchError, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-page-track-map',
@@ -20,6 +21,7 @@ import { of } from 'rxjs';
     MatCardModule,
     MatIconModule,
     LoadingComponent,
+    FormsModule
   ],
   templateUrl: './page-track-map.component.html',
   styleUrl: './page-track-map.component.css',
@@ -42,9 +44,15 @@ export class PageTrackMapComponent implements OnInit, OnDestroy {
   coorPorUsuSubscription!: Subscription;
   dirNominatiSubscription!: Subscription;
 
+  xcoordenadas: TrackEstado[] = [];
+  listPedidos: TrackingPedxConductorResponse[] = [];
+  fechaSeleccionada: Date = new Date();
+
   ngOnInit(): void {
-    this.cargarUbicacionConductores();
+    // this.cargarUbicacionConductores();
     console.log(this.fechaHoy.toISOString().split('T')[0]);
+
+    this.cargarPedidosPorConductorTrack();
   }
 
   ngOnDestroy(): void {
@@ -57,6 +65,19 @@ export class PageTrackMapComponent implements OnInit, OnDestroy {
     if (this.dirNominatiSubscription) {
       this.dirNominatiSubscription.unsubscribe();
     }
+  }
+
+  cargarPedidosPorConductorTrack(){
+    const fecha = '2025-06-19';
+    this.pedidoService.getPedidosPorConductorTrack(fecha)
+      .subscribe({
+        next: (response) => {
+          this.listPedidos = response.data;          
+        },
+        error: (error) => {
+          console.error('Error al cargar pedidos por conductor', error);
+        },
+      });
   }
 
   cargarUbicacionConductores() {
@@ -81,10 +102,24 @@ export class PageTrackMapComponent implements OnInit, OnDestroy {
     this.obtenerCoordenasPorUsuario(this.usuarioId);
   }
 
-  isConductorSelected(conductor: any): boolean {
-    return this.selectedConductorId === conductor.usuarioId;
+  handlerListPedido(conductorId:number, item: PedidoInfo) {
+    this.selectedConductorId = conductorId;
+    this.xcoordenadas = item.estados;
+    this.loading = true;
+    setTimeout(() => {
+      this.loading = false;
+    }, 300);
+
+
+    // this.usuarioId = pedido.conductorId;
+    // this.actualizarInfoMarker(pedido);
+    // this.obtenerCoordenasPorUsuario(this.usuarioId);
   }
 
+  isConductorSelected(pedido: TrackingPedxConductorResponse): boolean {
+    return this.selectedConductorId === pedido.conductorId;
+  }
+  
   private actualizarInfoMarker(conductor: IGetUbicacionConductoresResponse) {
     this.xpropiedades = {
       unidad: conductor.placaVehiculo,

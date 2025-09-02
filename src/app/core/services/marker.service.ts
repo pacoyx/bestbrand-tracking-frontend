@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
 import { PopupmapService } from './popupmap.service';
-import { IInfoPropMarker } from '../interfaces/ICommons';
+import { IInfoPropMarker, TrackEstado } from '../interfaces/ICommons';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,48 @@ export class MarkerService {
     return 20 * (val / maxVal);
   }
 
-  makeCapitalMarker(map: L.Map, lat: number, lon: number, propiedades: IInfoPropMarker) : void {
+  makeTruckMarker(map: L.Map, coordenadas: TrackEstado[], placa: string) {
+    coordenadas.forEach((estado) => {
+      const truckIcon = L.icon({
+        iconUrl: 'truck_32x32.svg',
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -16],
+      });
+
+      const marker = L.marker([estado.latitudEntrega, estado.longitudEntrega], {
+        icon: truckIcon,
+      });
+      marker.bindPopup(this.popupService.makeTruckPopup(estado));
+
+      const tooltipContent = `
+    <div class="custom-tooltip-content">
+      <div class="placa-info">Placa: ${placa}</div>
+      <div class="direccion-info">${estado.estadoRegistro}</div>
+    </div>
+  `;
+
+      marker.bindTooltip(tooltipContent, {
+        permanent: true,
+        direction: 'top',
+        offset: [0, -10],
+        className: 'map-car-label',
+      });
+
+      marker.addTo(map);
+
+      const bounds = L.latLngBounds([marker.getLatLng()]);
+      map.fitBounds(bounds);
+      // map.setZoom(map.getZoom() - 1);
+    });
+  }
+
+  makeCapitalMarker(
+    map: L.Map,
+    lat: number,
+    lon: number,
+    propiedades: IInfoPropMarker
+  ): void {
     const carIcon = L.icon({
       iconUrl: 'truck_32x32.svg',
       iconSize: [32, 32], // ancho, alto
@@ -29,7 +70,7 @@ export class MarkerService {
     marker.bindPopup(this.popupService.makeDriverPopup(propiedades));
 
     const etiquetDireccion = `Placa: ${propiedades.unidad} | ${propiedades.direccion}`;
-  const tooltipContent = `
+    const tooltipContent = `
     <div class="custom-tooltip-content">
       <div class="placa-info">Placa: ${propiedades.unidad}</div>
       <div class="direccion-info">${propiedades.direccion}</div>
@@ -40,7 +81,7 @@ export class MarkerService {
       permanent: true,
       direction: 'top',
       offset: [0, -10],
-      className: 'map-car-label',      
+      className: 'map-car-label',
     });
 
     marker.addTo(map);

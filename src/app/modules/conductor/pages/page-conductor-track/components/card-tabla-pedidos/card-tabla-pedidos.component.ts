@@ -124,7 +124,7 @@ export class CardTablaPedidosComponent {
             estado: this.pedido.estadoPedido,
             comentarios: result.comentarios,
           });
-          this.obtenerYEnviarUbicacion();
+          // this.obtenerYEnviarUbicacion();
         }
       });
   }
@@ -154,7 +154,7 @@ export class CardTablaPedidosComponent {
             estado: this.pedido.estadoPedido,
             comentarios: result.comentarios,
           });
-          this.obtenerYEnviarUbicacion();
+          // this.obtenerYEnviarUbicacion();
         }
       });
   }

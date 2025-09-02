@@ -29,3 +29,25 @@ export interface IInfoPropMarker {
   nombre: string;  
   direccion:string;
 }
+
+export interface TrackingPedxConductorResponse {
+  conductorId: number;
+  nombreConductor: string;
+  placaVehiculo: string;
+  pedidoInfo: PedidoInfo[];
+}
+
+export interface PedidoInfo {
+  pedidoId: string;
+  numeroPedido: string;
+  fechaPedido: string;
+  estados: TrackEstado[];
+}
+
+export interface TrackEstado {
+  fechaRegistro: string;
+  estadoRegistro: string;
+  comentarios: string;
+  latitudEntrega: number;
+  longitudEntrega: number;
+}

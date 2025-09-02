@@ -19,5 +19,11 @@ export class PopupmapService {
       `<div>Conductor: ${ data.nombre }</div>` +
       `<div>Unidad: ${ data.unidad }</div>`
   }
+
+  makeTruckPopup(data: any): string {
+    return `` +
+      `<div>Conductor: ${ data.nombre }</div>` +
+      `<div>Unidad: ${ data.unidad }</div>`
+  }
   
 }

@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { IResponseGeneric } from '../../../core/interfaces/ICommons';
+import {
+  IResponseGeneric,
+  TrackingPedxConductorResponse,
+} from '../../../core/interfaces/ICommons';
 import {
   ICreateConductorRequest,
   ICreateConductorResponse,
@@ -89,15 +92,17 @@ export class PedidosmntService {
     );
   }
 
-  listarFacturaDetallePorPedido(numeroPedido: string): Observable<IResponseGeneric<IGetFacturaDetallePorPedidoResponse[]>>
-  {
+  listarFacturaDetallePorPedido(
+    numeroPedido: string
+  ): Observable<IResponseGeneric<IGetFacturaDetallePorPedidoResponse[]>> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.get<IResponseGeneric<IGetFacturaDetallePorPedidoResponse[]>>(
+    return this.http.get<
+      IResponseGeneric<IGetFacturaDetallePorPedidoResponse[]>
+    >(
       `${this.apiUrl}${environment.EPListarFacturaDetallePorPedido}/${numeroPedido}`,
       { headers }
     );
   }
-
 
   // CONDUCTOR ============
 
@@ -308,8 +313,18 @@ export class PedidosmntService {
     );
   }
 
-  getDireccionNominatim(lat: number, lon: number): Observable<any> {    
+  getDireccionNominatim(lat: number, lon: number): Observable<any> {
     const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
     return this.http.get(url);
+  }
+
+  getPedidosPorConductorTrack(
+    fecha: string
+  ): Observable<IResponseGeneric<TrackingPedxConductorResponse[]>> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.get<IResponseGeneric<TrackingPedxConductorResponse[]>>(
+      `${this.apiUrl}${environment.EPListarPedidosPorConductorTrack}/${fecha}`,
+      { headers }
+    );
   }
 }

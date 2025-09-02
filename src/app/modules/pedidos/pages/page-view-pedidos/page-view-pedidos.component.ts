@@ -22,6 +22,7 @@ import { Subscription } from 'rxjs';
 import { LoadingComponent } from '../../../../core/components/loading/loading.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDetalleFacturaComponent } from './components/dialog-detalle-factura/dialog-detalle-factura.component';
+import { DialogVisorPdfComponent } from '../../../../core/components/dialog-visor-pdf/dialog-visor-pdf.component';
 
 @Component({
   selector: 'app-page-view-pedidos',
@@ -51,10 +52,13 @@ export class PageViewPedidosComponent implements OnDestroy {
   dataSource = new MatTableDataSource<IGetPedidosResponse>([]);
   loading = false;
   loadingDetalle = false;
+  indexRowLoading: string = '';
   pedidosSubscription!: Subscription;
   detalleSubscription!: Subscription;
   displayedColumns: string[] = [
+    'item',
     'actions',
+    'documents',
     'nropedido',
     'cliente',
     'direntrega',
@@ -68,9 +72,25 @@ export class PageViewPedidosComponent implements OnDestroy {
       this.detalleSubscription.unsubscribe();
     }
   }
+
+  verDocumento(pedido: IGetPedidosResponse) {
+    console.log('Ver documento del pedido:', pedido);
+    console.log('Ver factura para el pedido:', pedido);
+    this.dialog.open(DialogVisorPdfComponent, {
+      data: {
+        objPedido: pedido,
+      },
+      width: '90vw',
+      height: '90vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+    });
+  }
+
   verDetalle(element: IGetPedidosResponse) {
     console.log('Ver detalle del pedido:', element);
 
+    this.indexRowLoading = element.numero;
     this.loadingDetalle = true;
     this.detalleSubscription = this.pedidoService
       .listarFacturaDetallePorPedido(element.numero)

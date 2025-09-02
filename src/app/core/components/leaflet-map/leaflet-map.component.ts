@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, inject, Input } from '@angular/core';
 import * as L from 'leaflet';
 import { MarkerService } from '../../services/marker.service';
-import { IInfoPropMarker } from '../../interfaces/ICommons';
+import { IInfoPropMarker, TrackEstado } from '../../interfaces/ICommons';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -31,7 +31,12 @@ export class LeafletMapComponent {
 
   @Input() latitude: number = 0;
   @Input() longitude: number = 0;
-  @Input() propiedades: IInfoPropMarker = { unidad: '', nombre: '', direccion: '' };
+  @Input() propiedades: IInfoPropMarker = {
+    unidad: '',
+    nombre: '',
+    direccion: '',
+  };
+  @Input() coordenadas: TrackEstado[] = [];
 
   constructor() {}
 
@@ -40,12 +45,17 @@ export class LeafletMapComponent {
   ngAfterViewInit() {
     this.initMap();
 
-    this.markerService.makeCapitalMarker(
-      this.map,
-      this.latitude,
-      this.longitude,
-      this.propiedades
-    );
+    if (this.coordenadas.length > 0) {
+      console.log('vista de coordenadas');
+      this.markerService.makeTruckMarker(this.map, this.coordenadas, this.propiedades.unidad);
+    } else {
+      this.markerService.makeCapitalMarker(
+        this.map,
+        this.latitude,
+        this.longitude,
+        this.propiedades
+      );
+    }
   }
 
   private initMap() {

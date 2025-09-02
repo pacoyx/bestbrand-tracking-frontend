@@ -45,3 +45,21 @@ export interface IPedidoImagenBase64DtoRequest {
   imagenBase64: string;
   EstadoPedido: string;
 }
+
+
+export interface ITrackEstadoPedido {
+  estadoPedidoRequest: EstadoPedidoRequest;
+  latitud: number;
+  longitud: number;
+  fechaHora: Date;
+  dispositivoId: number;
+}
+
+interface EstadoPedidoRequest {
+  pedidoId: number;
+  estadoPedido: string;
+  comentarios: string;
+  fechaEntrega: string;
+  nombreFoto: string;
+  conductorId: number;
+}

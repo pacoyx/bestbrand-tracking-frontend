@@ -26,6 +26,7 @@
 }
 
 .login-image img {    
+    background-color: #743F48;
     width: 100%;
     max-width: 300px;
     height: auto;

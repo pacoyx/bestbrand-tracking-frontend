@@ -58,7 +58,7 @@ export class LayoutConductorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.iniciarSeguimientoUbicacion();
+    // this.iniciarSeguimientoUbicacion();
   }
 
   ngOnDestroy(): void {

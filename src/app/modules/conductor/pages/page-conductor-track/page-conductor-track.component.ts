@@ -21,6 +21,7 @@ import { FormsModule } from '@angular/forms';
 import {
   IActualizarEstadoPedidoRequest,
   IGetPedidosResponse,
+  ITrackEstadoPedido,
 } from '../../interfaces/IOperaciones';
 import { DialogFormActualizarEstadoPedidoComponent } from './components/dialog-form-actualizar-estado-pedido/dialog-form-actualizar-estado-pedido.component';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -28,7 +29,9 @@ import { ConductorTrackService } from '../../services/conductor-track.service';
 import { DeviceDetectionService } from '../../../../core/services/device-detection.service';
 import { CardTablaPedidosComponent } from './components/card-tabla-pedidos/card-tabla-pedidos.component';
 import { LoadingComponent } from '../../../../core/components/loading/loading.component';
-import { Geolocation, Position } from '@capacitor/geolocation';
+import { Position } from '@capacitor/geolocation';
+import { StorageService } from '../../../../core/services/storage.service';
+import { Geolocation } from '@capacitor/geolocation';
 
 @Component({
   selector: 'app-page-conductor-track',
@@ -81,43 +84,9 @@ export class PageConductorTrackComponent implements OnInit, OnDestroy {
   idMobile: boolean = false;
   driverId: number = 0; // ID del conductor, se puede obtener de la sesión o contexto actual
   dataPedidos: IGetPedidosResponse[] = [];
-
-  // Método para verificar si tenemos ubicación
-  // hasLocation(): boolean {
-  //   return this.loc !== null && this.loc.coords !== undefined;
-  // }
-
-  // async getCurrentPosition11() {
-  //   const position = await Geolocation.getCurrentPosition();
-  //   const { latitude, longitude } = position.coords;
-  //   console.log(`Lat: ${latitude}, Lng: ${longitude}`);
-  //   return { latitude, longitude };
-  // }
-
-  // async getCurrentPosition() {
-  //   try {
-  //     const position = await Geolocation.getCurrentPosition();
-  //     this.loc = position;
-  //     console.log('Posición actual:', position);
-  //   } catch (error) {
-  //     console.error('Error obteniendo la posición:', error);
-  //     this.loc = null;
-  //   }
-  // }
-
-  // // También puedes crear un método para obtener coordenadas específicas
-  // getCoordinates(): { lat: number; lng: number } | null {
-  //   if (this.loc?.coords) {
-  //     return {
-  //       lat: this.loc.coords.latitude,
-  //       lng: this.loc.coords.longitude,
-  //     };
-  //   }
-  //   return null;
-  // }
+  storage = inject(StorageService);
 
   ngOnInit(): void {
-    // Obtener el ID del conductor desde el servicio de autenticación
     const user = this.loginService.getCurrentUser();
     if (user && user.driverId) {
       this.driverId = user.driverId;
@@ -126,8 +95,6 @@ export class PageConductorTrackComponent implements OnInit, OnDestroy {
       console.log('Es móvil:', isMobile);
       this.idMobile = isMobile;
     });
-
-   
   }
 
   cargarPedidos() {
@@ -171,27 +138,40 @@ export class PageConductorTrackComponent implements OnInit, OnDestroy {
     });
   }
 
-  cambiarEstadoPedido(
+  async cambiarEstadoPedido(
     nuevoEstado: { estado: string; comentarios?: string },
     pedidoId: number
   ) {
     const fechaPeru = new Date(new Date().getTime() - 5 * 60 * 60 * 1000);
     let fechaEntrega = fechaPeru.toISOString().split('T')[0]; // Formatear la fecha a YYYY-MM-DD
 
+    const dispositivoId = await this.storage.get('dispositivoId');
+    const position = await Geolocation.getCurrentPosition({
+      enableHighAccuracy: true,      
+      maximumAge: 5000,
+    });
+    const { latitude, longitude } = position.coords;
+
     this.loadingSave = true;
-    const data: IActualizarEstadoPedidoRequest = {
-      pedidoId: pedidoId,
-      estadoPedido: nuevoEstado.estado,
-      comentarios: nuevoEstado.comentarios || '',
-      fechaEntrega:
-        nuevoEstado.estado === 'ENTREGADO' ? fechaEntrega : '0001-01-01',
-      nombreFoto: '',
-      conductorId: this.driverId, // Asignar el ID del conductor
+    const data: ITrackEstadoPedido = {
+      estadoPedidoRequest: {
+        pedidoId: pedidoId,
+        estadoPedido: nuevoEstado.estado,
+        comentarios: nuevoEstado.comentarios || '',
+        fechaEntrega:
+          nuevoEstado.estado === 'ENTREGADO' ? fechaEntrega : '0001-01-01',
+        nombreFoto: '',
+        conductorId: this.driverId,
+      },
+      latitud: latitude,
+      longitud: longitude,
+      fechaHora: new Date(),
+      dispositivoId: dispositivoId ? Number(dispositivoId) : 0,
     };
     console.log('Datos para actualizar el estado del pedido:', data);
 
     this.conductorService
-      .actualizarEstadoPedido(data.pedidoId, data)
+      .trackEstadoPedido(data.estadoPedidoRequest.pedidoId, data)
       .subscribe({
         next: (response) => {
           this.loadingSave = false;
