@@ -24,7 +24,6 @@ import {
 } from '../../interfaces/IPedidoTrack';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { AdminModService } from '../../../administracion/services/admin-mod.service';
 import { IGetConductoresToHelpResponse } from '../../../administracion/interfaces/IUser';
 import { IGetVehiculosToHelpResponse } from '../../interfaces/IVehiculo';
 import { IGetEmpresasTransporteToHelpResponse } from '../../interfaces/IEmpresaTransporte';
@@ -32,7 +31,7 @@ import { LoadingComponent } from '../../../../core/components/loading/loading.co
 import { DialogVisorPdfComponent } from '../../../../core/components/dialog-visor-pdf/dialog-visor-pdf.component';
 import { DialogVisorImgComponent } from './components/dialog-visor-img/dialog-visor-img.component';
 import { EstadoRegistroDetalleComponent } from '../../../conductor/pages/page-conductor-track/components/estado-registro-detalle/estado-registro-detalle.component';
-import { LeafletMapComponent } from '../../../../core/components/leaflet-map/leaflet-map.component';
+
 
 @Component({
   selector: 'app-page-track-pedidos',

@@ -1,9 +1,9 @@
 export interface IResponseGeneric<T> {
-    success: boolean;
-    message: string;
-    data: T;
-    errors: string[];
-    totalCount: number
+  success: boolean;
+  message: string;
+  data: T;
+  errors: string[];
+  totalCount: number;
 }
 
 export interface IRegDispositivoRequest {
@@ -24,10 +24,10 @@ export interface IRegUbicacionRequest {
   dispositivoId: number;
 }
 
-export interface IInfoPropMarker {  
+export interface IInfoPropMarker {
   unidad: string;
-  nombre: string;  
-  direccion:string;
+  nombre: string;
+  direccion: string;
 }
 
 export interface TrackingPedxConductorResponse {
@@ -41,6 +41,7 @@ export interface PedidoInfo {
   pedidoId: string;
   numeroPedido: string;
   fechaPedido: string;
+  prioridad: number;
   estados: TrackEstado[];
 }
 

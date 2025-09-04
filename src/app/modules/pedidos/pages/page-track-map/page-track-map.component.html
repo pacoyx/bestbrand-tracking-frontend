@@ -16,11 +16,33 @@
   </div>
 
   <div style="display: flex">
-    <div style="width: 20%; padding: 10px; padding-top: 0px; padding-left: 0px">
-      <div style="margin: 5px;">
-        <label for="fechaSeleccionada">Fecha de Selección:</label>
-        <input type="date" [(ngModel)]="fechaSeleccionada"  id="fechaSeleccionada"/>
+    <div
+      style="        
+        width: 20%;
+        padding: 10px;
+        padding-top: 0px;
+        padding-left: 0px;
+      "
+    >
+      <div style="margin: 5px">
+        <mat-form-field>
+          <mat-label>Seleccione fecha</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [(ngModel)]="fechaHoy"
+            (dateChange)="onDateChange($event)"
+          />
+          <!-- <mat-hint>DD/MM/YYYY</mat-hint> -->
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
       </div>
+<div style="height: 80vh; overflow-y: auto; padding: 5px;">
+  
 
       @for(pedido of listPedidos; track pedido){
       <mat-card
@@ -63,17 +85,17 @@
             <table>
               <thead>
                 <tr>
-                  <th>Item</th>
+                  <th>Prioridad</th>
                   <th>Número</th>
                 </tr>
               </thead>
               <tbody>
                 @for (item of pedido.pedidoInfo; track $index) {
                 <tr
-                  (click)="handlerListPedido(pedido.conductorId, item)"
+                  (click)="handlerListPedido(pedido, item)"
                   class="fila"
                 >
-                  <td>{{ $index + 1 }}</td>
+                  <td>{{ item.prioridad }}</td>
                   <td>{{ item.numeroPedido }}</td>
                 </tr>
                 }
@@ -83,6 +105,8 @@
         </mat-card-content>
       </mat-card>
       }
+</div>
+
     </div>
 
     <div style="width: 80%">

@@ -4,14 +4,31 @@ import { PedidosmntService } from '../../services/pedidosmnt.service';
 import { IGetUbicacionConductoresResponse } from '../../interfaces/IPedidoTrack';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { IInfoPropMarker, PedidoInfo, TrackEstado, TrackingPedxConductorResponse } from '../../../../core/interfaces/ICommons';
+import {
+  IInfoPropMarker,
+  PedidoInfo,
+  TrackEstado,
+  TrackingPedxConductorResponse,
+} from '../../../../core/interfaces/ICommons';
 import { Subscription } from 'rxjs';
 import { LoadingComponent } from '../../../../core/components/loading/loading.component';
-
 
 import { switchMap, tap, catchError, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import {
+  MatDatepickerInputEvent,
+  MatDatepickerModule,
+} from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
+import { CustomDateAdapter } from '../../../../core/configGlobal/custom-date-adapter';
+import { CUSTOM_DATE_FORMATS } from '../../../../core/configGlobal/custom-date-formats';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-page-track-map',
@@ -21,7 +38,15 @@ import { FormsModule } from '@angular/forms';
     MatCardModule,
     MatIconModule,
     LoadingComponent,
-    FormsModule
+    FormsModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
+  providers: [
+    provideNativeDateAdapter(),
+    { provide: DateAdapter, useClass: CustomDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
   ],
   templateUrl: './page-track-map.component.html',
   styleUrl: './page-track-map.component.css',
@@ -67,17 +92,25 @@ export class PageTrackMapComponent implements OnInit, OnDestroy {
     }
   }
 
-  cargarPedidosPorConductorTrack(){
-    const fecha = '2025-06-19';
-    this.pedidoService.getPedidosPorConductorTrack(fecha)
-      .subscribe({
-        next: (response) => {
-          this.listPedidos = response.data;          
-        },
-        error: (error) => {
-          console.error('Error al cargar pedidos por conductor', error);
-        },
-      });
+  onDateChange(event: MatDatepickerInputEvent<Date>) {
+    console.log('Fecha seleccionada:', event.value);
+    this.fechaHoy = event.value || new Date();
+
+    // Aquí puedes agregar tu lógica, por ejemplo:
+    this.cargarPedidosPorConductorTrack();
+  }
+
+  cargarPedidosPorConductorTrack() {
+    // const fecha = '2025-06-19';
+    const fecha = this.fechaHoy.toISOString().split('T')[0]; // Formatear la fecha a YYYY-MM-DD
+    this.pedidoService.getPedidosPorConductorTrack(fecha).subscribe({
+      next: (response) => {
+        this.listPedidos = response.data;
+      },
+      error: (error) => {
+        console.error('Error al cargar pedidos por conductor', error);
+      },
+    });
   }
 
   cargarUbicacionConductores() {
@@ -102,14 +135,18 @@ export class PageTrackMapComponent implements OnInit, OnDestroy {
     this.obtenerCoordenasPorUsuario(this.usuarioId);
   }
 
-  handlerListPedido(conductorId:number, item: PedidoInfo) {
-    this.selectedConductorId = conductorId;
+  handlerListPedido(pedido: TrackingPedxConductorResponse, item: PedidoInfo) {
+    this.selectedConductorId = pedido.conductorId;
     this.xcoordenadas = item.estados;
+    this.xpropiedades = {
+      unidad: pedido.placaVehiculo,
+      nombre: pedido.nombreConductor,
+      direccion: '',
+    };
     this.loading = true;
     setTimeout(() => {
       this.loading = false;
     }, 300);
-
 
     // this.usuarioId = pedido.conductorId;
     // this.actualizarInfoMarker(pedido);
@@ -119,7 +156,7 @@ export class PageTrackMapComponent implements OnInit, OnDestroy {
   isConductorSelected(pedido: TrackingPedxConductorResponse): boolean {
     return this.selectedConductorId === pedido.conductorId;
   }
-  
+
   private actualizarInfoMarker(conductor: IGetUbicacionConductoresResponse) {
     this.xpropiedades = {
       unidad: conductor.placaVehiculo,
@@ -156,57 +193,58 @@ export class PageTrackMapComponent implements OnInit, OnDestroy {
   // }
 
   obtenerCoordenasPorUsuario(usuarioId: number) {
-  this.loading = true;
-  
-  this.coorPorUsuSubscription = this.pedidoService
-    .getCoordenasPorUsuario(usuarioId)
-    .pipe(
-      // Validar respuesta de coordenadas
-      tap((response) => {
-        if (!response?.data?.latitud || !response?.data?.longitud) {
-          throw new Error('Coordenadas inválidas recibidas');
-        }
-      }),
-      // Actualizar coordenadas y obtener dirección
-      switchMap((response) => {
-        this.xLatitud = response.data.latitud;
-        this.yLongitud = response.data.longitud;
-        
-        return this.pedidoService.getDireccionNominatim(
-          this.xLatitud, 
-          this.yLongitud
-        );
-      }),
-      // Manejo de errores específico
-      catchError((error) => {
-        console.error('Error en obtenerCoordenasPorUsuario:', error);
-        
-        // Retornar dirección por defecto en caso de error
-        return of({ 
-          display_name: 'Dirección no disponible' 
-        });
-      }),
-      // Limpiar loading state
-      finalize(() => {
-        this.loading = false;
-      })
-    )
-    .subscribe({
-      next: (direccionResponse) => {
-        this.xpropiedades.direccion = direccionResponse.display_name || 'Dirección no disponible';
-        
-        console.log('Ubicación cargada exitosamente:', {
-          usuarioId,
-          coordenadas: { lat: this.xLatitud, lng: this.yLongitud },
-          direccion: this.xpropiedades.direccion
-        });
-      },
-      error: (error) => {
-        // Este bloque solo se ejecutaría si hay errores no manejados
-        console.error('Error no manejado:', error);
-      }
-    });
-}
+    this.loading = true;
+
+    this.coorPorUsuSubscription = this.pedidoService
+      .getCoordenasPorUsuario(usuarioId)
+      .pipe(
+        // Validar respuesta de coordenadas
+        tap((response) => {
+          if (!response?.data?.latitud || !response?.data?.longitud) {
+            throw new Error('Coordenadas inválidas recibidas');
+          }
+        }),
+        // Actualizar coordenadas y obtener dirección
+        switchMap((response) => {
+          this.xLatitud = response.data.latitud;
+          this.yLongitud = response.data.longitud;
+
+          return this.pedidoService.getDireccionNominatim(
+            this.xLatitud,
+            this.yLongitud
+          );
+        }),
+        // Manejo de errores específico
+        catchError((error) => {
+          console.error('Error en obtenerCoordenasPorUsuario:', error);
+
+          // Retornar dirección por defecto en caso de error
+          return of({
+            display_name: 'Dirección no disponible',
+          });
+        }),
+        // Limpiar loading state
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe({
+        next: (direccionResponse) => {
+          this.xpropiedades.direccion =
+            direccionResponse.display_name || 'Dirección no disponible';
+
+          console.log('Ubicación cargada exitosamente:', {
+            usuarioId,
+            coordenadas: { lat: this.xLatitud, lng: this.yLongitud },
+            direccion: this.xpropiedades.direccion,
+          });
+        },
+        error: (error) => {
+          // Este bloque solo se ejecutaría si hay errores no manejados
+          console.error('Error no manejado:', error);
+        },
+      });
+  }
 
   getTiempoTranscurrido(fecha: Date | string): string {
     const fechaInput = typeof fecha === 'string' ? new Date(fecha) : fecha;

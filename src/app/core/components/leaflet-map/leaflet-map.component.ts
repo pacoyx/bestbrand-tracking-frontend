@@ -47,7 +47,7 @@ export class LeafletMapComponent {
 
     if (this.coordenadas.length > 0) {
       console.log('vista de coordenadas');
-      this.markerService.makeTruckMarker(this.map, this.coordenadas, this.propiedades.unidad);
+      this.markerService.makeTruckMarker(this.map, this.coordenadas, this.propiedades);
     } else {
       this.markerService.makeCapitalMarker(
         this.map,

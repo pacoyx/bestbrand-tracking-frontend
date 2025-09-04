@@ -17,7 +17,7 @@ export class MarkerService {
     return 20 * (val / maxVal);
   }
 
-  makeTruckMarker(map: L.Map, coordenadas: TrackEstado[], placa: string) {
+  makeTruckMarker(map: L.Map, coordenadas: TrackEstado[], TruckInfo: IInfoPropMarker) {
     coordenadas.forEach((estado) => {
       const truckIcon = L.icon({
         iconUrl: 'truck_32x32.svg',
@@ -29,12 +29,12 @@ export class MarkerService {
       const marker = L.marker([estado.latitudEntrega, estado.longitudEntrega], {
         icon: truckIcon,
       });
-      marker.bindPopup(this.popupService.makeTruckPopup(estado));
+      marker.bindPopup(this.popupService.makeTruckPopup(TruckInfo));
 
       const tooltipContent = `
     <div class="custom-tooltip-content">
-      <div class="placa-info">Placa: ${placa}</div>
       <div class="direccion-info">${estado.estadoRegistro}</div>
+      <div class="placa-info">Hora: ${new Date(estado.fechaRegistro).toLocaleTimeString()}</div>
     </div>
   `;
 
